@@ -1,7 +1,7 @@
 {
-  "name": "smart-taskboard",
+  "name": "project-sync",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -12,9 +12,9 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.1.7",
     "lucide-react": "^0.511.0",
+    "project-sync": "file:",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "smart-taskboard": "file:",
     "tailwindcss": "^4.1.7"
   },
   "devDependencies": {
