@@ -1,0 +1,38 @@
+@import "tailwindcss";
+
+/* 🎯 Universal Fancy Scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(100, 100, 100, 0.4) transparent; /* Firefox */
+}
+
+/* Chrome, Edge, Safari */
+*::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgba(100, 100, 100, 0.4); /* Subtle thumb */
+  border-radius: 9999px;
+  border: none;
+  transition: background-color 0.2s ease;
+}
+
+/* 🌙 Dark mode */
+.dark *::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.15); /* Subtle white thumb */
+}
+
+/* Optional hover effect */
+*::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(100, 100, 100, 0.6);
+}
+
+.dark *::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
