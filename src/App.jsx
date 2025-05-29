@@ -33,25 +33,35 @@ export default function App() {
   function handleDragOver(e) {
     e.preventDefault();
   }
+  function handleFormOpen() {
+    setShowForm(true);
+  }
 
+  function labelFilter(label) {
+    return tasks.filter((task) => task.label === label);
+  }
+
+  function renderTaskList(label) {
+    return (
+      <TaskList
+        key={label}
+        label={label}
+        title={LABELS[label]}
+        tasks={labelFilter(label)}
+        handleDrop={handleDrop}
+        handleDragOver={handleDragOver}
+        handleDeleteTask={handleDeleteTask}
+      />
+    );
+  }
   return (
     <div className="w-screen h-screen bg-[#f4fbf9] dark:bg-black p-2">
       <Toast />
       {showForm && <CreateTaskForm setShowForm={setShowForm} />}
       <div className="size-full flex flex-col items-end">
-        <CreateTaskBtn label="Create Task" onClick={() => setShowForm(true)} />
+        <CreateTaskBtn label="Create Task" onClick={handleFormOpen} />
         <div className="flex-1 flex gap-2  justify-between w-full">
-          {Object.keys(LABELS).map((label) => (
-            <TaskList
-              key={label}
-              label={label}
-              title={LABELS[label]}
-              tasks={tasks.filter((task) => task.label === label)}
-              handleDrop={handleDrop}
-              handleDragOver={handleDragOver}
-              handleDeleteTask={handleDeleteTask}
-            />
-          ))}
+          {Object.keys(LABELS).map(renderTaskList)}
         </div>
       </div>
     </div>
