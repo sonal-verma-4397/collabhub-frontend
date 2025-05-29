@@ -58,6 +58,9 @@ export default function CreateTaskForm({ setShowForm }) {
     showToast(`${titleRef.current.value} added successfully`);
   }
 
+  function handleFormClose() {
+    setShowForm(false);
+  }
   return (
     <div className="fixed inset-0 bg-opacity-30 flex items-center justify-center z-50">
       <form
@@ -74,7 +77,7 @@ export default function CreateTaskForm({ setShowForm }) {
         </div>
 
         <div className="flex justify-end space-x-3 pt-4">
-          <CloseBtn label="Close" onClick={() => setShowForm(false)} />
+          <CloseBtn label="Close" onClick={handleFormClose} />
           <AddTasktBtn label="Add Task" />
         </div>
       </form>
