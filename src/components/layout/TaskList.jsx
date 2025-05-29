@@ -5,19 +5,26 @@ export default function TaskList({
   title,
   label,
   tasks,
-  setDraggedTaskId,
   handleDrop,
   handleDeleteTask,
+  handleDragOver,
 }) {
+  function handleDragStart(e) {
+    e.dataTransfer.setData("text/plain", e.currentTarget.dataset.id);
+  }
+  function createdDatedSorter(a, b) {
+    return new Date(b.createdAt) - new Date(a.createdAt);
+  }
   return (
     <section
-      onDragOver={(e) => e.preventDefault()}
-      onDrop={(e) => handleDrop(e, label)}
+      data-label={label}
+      onDragOver={handleDragOver}
+      onDrop={handleDrop}
       className="bg-white dark:bg-[#121316] flex-1 h-[737px] w-full rounded-lg shadow-lg  flex flex-col overflow-hidden"
     >
       <h2 className="dark:text-white text-center py-2 font-bold">{title}</h2>
       <div className="flex-1 h-full overflow-y-auto">
-        {tasks.map((task) => (
+        {[...tasks].sort(createdDatedSorter).map((task) => (
           <Task
             key={task.id}
             id={task.id}
@@ -27,8 +34,8 @@ export default function TaskList({
             priority={task.priority}
             createdAt={task.createdAt}
             updatedAt={task.updatedAt}
-            setDraggedTaskId={setDraggedTaskId}
             handleDeleteTask={handleDeleteTask}
+            handleDragStart={handleDragStart}
           />
         ))}
       </div>

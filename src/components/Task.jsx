@@ -10,8 +10,8 @@ export default function Task({
   priority,
   createdAt,
   updatedAt,
-  setDraggedTaskId,
   handleDeleteTask,
+  handleDragStart,
 }) {
   const getPriorityColor = (level) => {
     switch (level) {
@@ -26,13 +26,11 @@ export default function Task({
     }
   };
 
-  const handleDragStart = (e, taskId) => {
-    setDraggedTaskId(taskId);
-  };
   return (
     <div
+      data-id={id}
       draggable
-      onDragStart={(e) => handleDragStart(e, id)}
+      onDragStart={handleDragStart}
       className="group justify-between flex cursor-grab select-none m-2 bg-white dark:bg-gray-900 rounded-md p-5 shadow-md hover:shadow-xl transition-shadow duration-300 border dark:border-gray-700"
     >
       <div>
@@ -44,10 +42,10 @@ export default function Task({
         </p>
       </div>
 
-      {/* Trash button only visible on hover */}
       <button
+        data-id={id}
         className="cursor-pointer text-red-600 hover:text-red-800  group-hover:block transition"
-        onClick={() => handleDeleteTask(id)} // Replace with actual delete handler
+        onClick={handleDeleteTask}
       >
         <Trash size={20} />
       </button>

@@ -10,10 +10,11 @@ import { toasterContext } from "./context/Toaster.js";
 export default function App() {
   const { tasks, setTasks } = useContext(taskContext);
   const [showForm, setShowForm] = useState(false);
-  const [draggedTaskId, setDraggedTaskId] = useState(null);
   const { showToast } = useContext(toasterContext);
 
-  const handleDrop = (_, newLabel) => {
+  const handleDrop = (e) => {
+    const newLabel = e.currentTarget.dataset.label;
+    const draggedTaskId = e.dataTransfer.getData("text/plain");
     setTasks((prev) =>
       prev.map((task) =>
         task.id === draggedTaskId ? { ...task, label: newLabel } : task
@@ -21,13 +22,17 @@ export default function App() {
     );
     const task = tasks.find((task) => task.id === draggedTaskId);
     showToast(`${task.title} moved to ${LABELS[newLabel]}`, "success");
-    setDraggedTaskId(null);
   };
 
-  const handleDeleteTask = (taskId) => {
+  const handleDeleteTask = (e) => {
+    const taskId = e.currentTarget.dataset.id;
     setTasks((prev) => prev.filter((task) => task.id !== taskId));
     showToast("Task deleted successfully", "success");
   };
+
+  function handleDragOver(e) {
+    e.preventDefault();
+  }
 
   return (
     <div className="w-screen h-screen bg-[#f4fbf9] dark:bg-black p-2">
@@ -42,8 +47,8 @@ export default function App() {
               label={label}
               title={LABELS[label]}
               tasks={tasks.filter((task) => task.label === label)}
-              setDraggedTaskId={setDraggedTaskId}
               handleDrop={handleDrop}
+              handleDragOver={handleDragOver}
               handleDeleteTask={handleDeleteTask}
             />
           ))}

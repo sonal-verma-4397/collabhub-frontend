@@ -1,3 +1,3 @@
 import { createContext } from "react";
 
-export const taskContext = createContext([]);
+export const taskContext = createContext({ tasks: [], setTasks: () => {} });
