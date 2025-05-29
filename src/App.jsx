@@ -51,6 +51,7 @@ export default function App() {
         handleDrop={handleDrop}
         handleDragOver={handleDragOver}
         handleDeleteTask={handleDeleteTask}
+        handleFormOpen={handleFormOpen}
       />
     );
   }
@@ -59,7 +60,6 @@ export default function App() {
       <Toast />
       {showForm && <CreateTaskForm setShowForm={setShowForm} />}
       <div className="size-full flex flex-col items-end">
-        <CreateTaskBtn label="Create Task" onClick={handleFormOpen} />
         <div className="flex-1 flex gap-2  justify-between w-full">
           {Object.keys(LABELS).map(renderTaskList)}
         </div>
