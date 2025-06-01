@@ -16,4 +16,4 @@ export const LIMIT = {
   description: 200,
 };
 
-export const APP_NAME = "ProjectSync";
+export const APP_NAME = "Project Sync";
