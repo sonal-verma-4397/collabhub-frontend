@@ -5,7 +5,7 @@
             "dest": "/"
         },
         {
-            "src": "/:path*",
+            "src": "/overview",
             "dest": "/"
         }
     ]
