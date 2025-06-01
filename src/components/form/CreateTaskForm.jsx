@@ -7,13 +7,13 @@ import { toasterContext } from "../../context/Toaster";
 import { taskContext } from "../../context/Task";
 import { LIMIT } from "../../data/constants";
 
-export default function CreateTaskForm({ setShowForm }) {
+export default function CreateTaskForm({ setShowForm, defaultLabel }) {
   const { showToast } = useContext(toasterContext);
   const { setTasks } = useContext(taskContext);
 
   const titleRef = useRef(null);
   const descriptionRef = useRef(null);
-  const priorityRef = useRef(null);
+  // const priorityRef = useRef(null);
   const labelRef = useRef(null);
 
   function validateTask(task) {
@@ -37,7 +37,7 @@ export default function CreateTaskForm({ setShowForm }) {
     e.preventDefault();
     const title = titleRef.current.value;
     const description = descriptionRef.current.value || "no description found";
-    const priority = priorityRef.current.value;
+    // const priority = priorityRef.current.value;
     const label = labelRef.current.value;
     const createdAt = new Date().toISOString();
     const updatedAt = createdAt;
@@ -46,7 +46,7 @@ export default function CreateTaskForm({ setShowForm }) {
       id: `task-${new Date().getTime()}`,
       title,
       description,
-      priority,
+      // priority,
       label,
       createdAt,
       updatedAt,
@@ -56,6 +56,8 @@ export default function CreateTaskForm({ setShowForm }) {
 
     setTasks((prevTasks) => [...prevTasks, task]);
     showToast(`${titleRef.current.value} added successfully`);
+    console.log(task);
+    
   }
 
   function handleFormClose() {
@@ -71,14 +73,14 @@ export default function CreateTaskForm({ setShowForm }) {
 
         <div className="space-y-3">
           <TitleInput ref={titleRef} />
+          <LabelSelect ref={labelRef} defaultValue={defaultLabel} />
           <DescriptionInput ref={descriptionRef} />
-          <PrioritySelect ref={priorityRef} />
-          <LabelSelect ref={labelRef} />
+          {/* <PrioritySelect ref={priorityRef} /> */}
         </div>
 
         <div className="flex justify-end space-x-3 pt-4">
           <CloseBtn label="Close" onClick={handleFormClose} />
-          <AddTasktBtn label="Add Task" />
+          <AddTasktBtn label="Save" />
         </div>
       </form>
     </div>

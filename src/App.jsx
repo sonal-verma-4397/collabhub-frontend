@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { CreateTaskBtn } from "./components/ui/Button";
-import CreateTaskForm from "./components/layout/CreateTaskForm";
+import CreateTaskForm from "./components/form/CreateTaskForm.jsx";
 import TaskList from "./components/layout/TaskList";
 import { LABELS } from "./data/constants";
 import { Toast } from "./components/layout/Toast.jsx";
@@ -9,7 +9,6 @@ import { toasterContext } from "./context/Toaster.js";
 
 export default function App() {
   const { tasks, setTasks } = useContext(taskContext);
-  const [showForm, setShowForm] = useState(false);
   const { showToast } = useContext(toasterContext);
 
   const handleDrop = (e) => {
@@ -33,9 +32,6 @@ export default function App() {
   function handleDragOver(e) {
     e.preventDefault();
   }
-  function handleFormOpen() {
-    setShowForm(true);
-  }
 
   function labelFilter(label) {
     return tasks.filter((task) => task.label === label);
@@ -51,14 +47,12 @@ export default function App() {
         handleDrop={handleDrop}
         handleDragOver={handleDragOver}
         handleDeleteTask={handleDeleteTask}
-        handleFormOpen={handleFormOpen}
       />
     );
   }
   return (
     <div className="w-screen h-screen bg-[#f4fbf9] dark:bg-black p-2">
       <Toast />
-      {showForm && <CreateTaskForm setShowForm={setShowForm} />}
       <div className="size-full flex flex-col items-end">
         <div className="flex-1 flex gap-2  justify-between w-full">
           {Object.keys(LABELS).map(renderTaskList)}
