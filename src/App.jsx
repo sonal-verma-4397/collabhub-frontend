@@ -6,58 +6,27 @@ import { LABELS } from "./data/constants";
 import { Toast } from "./components/layout/Toast.jsx";
 import { taskContext } from "./context/Task.js";
 import { toasterContext } from "./context/Toaster.js";
+import { fallbackNavItems, navItems } from "./data/navItems.js";
+import Sidebar from "./components/layout/Sidebar.jsx";
+import Header from "./components/layout/Header.jsx";
+import MyTasks from "./pages/MyTasks.jsx";
+import { Outlet } from "react-router-dom";
 
 export default function App() {
-  const { tasks, setTasks } = useContext(taskContext);
-  const { showToast } = useContext(toasterContext);
+  const [showSidebar, setShowSidebar] = useState(false);
 
-  const handleDrop = (e) => {
-    const newLabel = e.currentTarget.dataset.label;
-    const draggedTaskId = e.dataTransfer.getData("text/plain");
-    setTasks((prev) =>
-      prev.map((task) =>
-        task.id === draggedTaskId ? { ...task, label: newLabel } : task
-      )
-    );
-    const task = tasks.find((task) => task.id === draggedTaskId);
-    showToast(`${task.title} moved to ${LABELS[newLabel]}`, "success");
-  };
-
-  const handleDeleteTask = (e) => {
-    const taskId = e.currentTarget.dataset.id;
-    setTasks((prev) => prev.filter((task) => task.id !== taskId));
-    showToast("Task deleted successfully", "success");
-  };
-
-  function handleDragOver(e) {
-    e.preventDefault();
-  }
-
-  function labelFilter(label) {
-    return tasks.filter((task) => task.label === label);
-  }
-
-  function renderTaskList(label) {
-    return (
-      <TaskList
-        key={label}
-        label={label}
-        title={LABELS[label]}
-        tasks={labelFilter(label)}
-        handleDrop={handleDrop}
-        handleDragOver={handleDragOver}
-        handleDeleteTask={handleDeleteTask}
-      />
-    );
-  }
   return (
-    <div className="w-screen h-screen bg-[#f4fbf9] dark:bg-black p-2">
+    <div className="flex gap-2 w-screen h-screen bg-[#f4fbf9] dark:bg-black p-2 dark:text-white">
       <Toast />
-      <div className="size-full flex flex-col items-end">
-        <div className="flex-1 flex gap-2  justify-between w-full">
-          {Object.keys(LABELS).map(renderTaskList)}
-        </div>
-      </div>
+      <Sidebar
+        open={showSidebar}
+        navItems={navItems}
+        fallbackNavItems={fallbackNavItems}
+      />
+      <main className="size-full flex flex-col  flex-1 rounded-lg ">
+        <Header setOpen={setShowSidebar} open={showSidebar} />
+        <Outlet />
+      </main>
     </div>
   );
 }

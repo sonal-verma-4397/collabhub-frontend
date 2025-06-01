@@ -15,3 +15,5 @@ export const LIMIT = {
   title: 100,
   description: 200,
 };
+
+export const APP_NAME = "ProjectSync";
