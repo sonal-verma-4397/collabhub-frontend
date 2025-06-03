@@ -63,9 +63,9 @@ export default function Sidebar({ navItems, open }) {
     <div
       role="navigation"
       aria-label="Main sidebar"
-      className={`select-none flex min-sm:flex-col bg-[#131416] rounded-lg h-full max-sm:h-fit transition-all duration-700 ease-in-out overflow-hidden ${
+      className={`select-none shrink-0 flex min-sm:flex-col bg-[#131416] rounded-lg h-full max-sm:h-fit transition-all duration-700 ease-in-out overflow-hidden ${
         open ? "w-72 max-sm:w-full" : "w-14 max-sm:w-full"
-      }`}
+      }`} 
     >
       {/* header */}
       <div className="flex sticky top-0 gap-2 p-2 hover:bg-[#202124] rounded-md w-full max-sm:hidden">

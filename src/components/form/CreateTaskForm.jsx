@@ -6,14 +6,15 @@ import { AddTasktBtn, CloseBtn } from "../ui/Button";
 import { toasterContext } from "../../context/Toaster";
 import { taskContext } from "../../context/Task";
 import { LIMIT } from "../../data/constants";
+import LocalStorageContext from "../../context/LocalStorage";
 
 export default function CreateTaskForm({ setShowForm, defaultLabel }) {
   const { showToast } = useContext(toasterContext);
   const { setTasks } = useContext(taskContext);
+  const { labels } = useContext(LocalStorageContext);
 
   const titleRef = useRef(null);
   const descriptionRef = useRef(null);
-  // const priorityRef = useRef(null);
   const labelRef = useRef(null);
 
   function validateTask(task) {
@@ -57,15 +58,19 @@ export default function CreateTaskForm({ setShowForm, defaultLabel }) {
     setTasks((prevTasks) => [...prevTasks, task]);
     showToast(`${titleRef.current.value} added successfully`);
     console.log(task);
-    
   }
 
   function handleFormClose() {
     setShowForm(false);
   }
+
   return (
-    <div className="fixed inset-0 bg-opacity-30 flex items-center justify-center z-50">
+    <div
+      onClick={handleFormClose}
+      className="fixed inset-0 bg-opacity-30 flex items-center justify-center z-50"
+    >
       <form
+        onClick={(e) => e.stopPropagation()}
         className="w-full max-w-md bg-white dark:bg-[#121316] dark:text-white p-6 rounded-xl shadow-lg space-y-4"
         onSubmit={handleSubmit}
       >
@@ -73,9 +78,13 @@ export default function CreateTaskForm({ setShowForm, defaultLabel }) {
 
         <div className="space-y-3">
           <TitleInput ref={titleRef} />
-          <LabelSelect ref={labelRef} defaultValue={defaultLabel} />
+          <span>{titleRef.current?.value.length}</span>
+          <LabelSelect
+            ref={labelRef}
+            labels={labels}
+            defaultValue={defaultLabel}
+          />
           <DescriptionInput ref={descriptionRef} />
-          {/* <PrioritySelect ref={priorityRef} /> */}
         </div>
 
         <div className="flex justify-end space-x-3 pt-4">
