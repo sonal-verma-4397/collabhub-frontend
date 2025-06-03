@@ -9,6 +9,7 @@ import Error from "./components/utility/Error.jsx";
 import Overview from "./pages/Overview.jsx";
 import Completed from "./pages/Completed.jsx";
 import Setting from "./pages/Setting.jsx";
+import { LocalStorageProvider } from "./context/LocalStorage.jsx";
 
 const router = createBrowserRouter(
   [
@@ -57,14 +58,16 @@ const router = createBrowserRouter(
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <TaskProvider>
-      <ToasterProvider>
-        <Suspense
-          fallback={<div className="text-center mt-10">Loading app...</div>}
-        >
-          <RouterProvider router={router} />
-        </Suspense>
-      </ToasterProvider>
-    </TaskProvider>
+    <LocalStorageProvider>
+      <TaskProvider>
+        <ToasterProvider>
+          <Suspense
+            fallback={<div className="text-center mt-10">Loading app...</div>}
+          >
+            <RouterProvider router={router} />
+          </Suspense>
+        </ToasterProvider>
+      </TaskProvider>
+    </LocalStorageProvider>
   </StrictMode>
 );
