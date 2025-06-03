@@ -1,12 +1,17 @@
-import React, { useContext } from "react";
-import { LABELS } from "../data/constants";
+import React, { useContext, useState } from "react";
+import { LABELS, LABELS_COLOR, NEW_LABELS } from "../data/constants";
 import TaskList from "../components/layout/TaskList";
 import { taskContext } from "../context/Task";
 import { toasterContext } from "../context/Toaster";
+import { Plus } from "lucide-react";
+import CreateLabelForm from "../components/form/CreateLabelForm";
+import LocalStorageContext from "../context/LocalStorage";
 
 export default function MyTasks() {
   const { tasks, setTasks } = useContext(taskContext);
   const { showToast } = useContext(toasterContext);
+  const { labels } = useContext(LocalStorageContext);
+  const [labelFormState, setLabelFormState] = useState("");
 
   const handleDrop = (e) => {
     const newLabel = e.currentTarget.dataset.label;
@@ -17,7 +22,7 @@ export default function MyTasks() {
       )
     );
     const task = tasks.find((task) => task.id === draggedTaskId);
-    showToast(`${task.title} moved to ${LABELS[newLabel]}`, "success");
+    showToast(`${task.title} moved to ${LABELS[newLabel].title}`, "success");
   };
 
   const handleDeleteTask = (e) => {
@@ -37,19 +42,27 @@ export default function MyTasks() {
   function renderTaskList(label) {
     return (
       <TaskList
-        key={label}
+        key={label.id}
         label={label}
-        title={LABELS[label]}
         tasks={labelFilter(label)}
         handleDrop={handleDrop}
         handleDragOver={handleDragOver}
         handleDeleteTask={handleDeleteTask}
+        labelFormState={labelFormState}
+        setLabelFormState={setLabelFormState}
       />
     );
   }
+
   return (
-    <div className="flex-1 flex gap-2 h-[760px] justify-between w-full">
-      {Object.keys(LABELS).map(renderTaskList)}
+    <div className="flex gap-2 w-[1456px] h-[760px] overflow-auto ">
+      {labels.map(renderTaskList)}
+      <span
+        onClick={() => setLabelFormState("new")}
+        className="dark:bg-[#262c36] h-fit p-2 rounded-lg cursor-pointer"
+      >
+        <Plus />
+      </span>
     </div>
   );
 }

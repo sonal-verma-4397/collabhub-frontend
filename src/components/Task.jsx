@@ -1,6 +1,5 @@
 import React from "react";
 import { CalendarDays, Clock, Trash } from "lucide-react"; // Optional icons (you can swap these)
-import { LABELS, PRIORITIES } from "../data/constants";
 
 export default function Task({
   id,
@@ -13,18 +12,6 @@ export default function Task({
   handleDeleteTask,
   handleDragStart,
 }) {
-  const getPriorityColor = (level) => {
-    switch (level) {
-      case "high":
-        return "bg-red-500 text-white";
-      case "medium":
-        return "bg-yellow-400 text-black";
-      case "low":
-        return "bg-green-500 text-white";
-      default:
-        return "bg-gray-300 text-black";
-    }
-  };
 
   return (
     <div
