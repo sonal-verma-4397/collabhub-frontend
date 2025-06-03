@@ -14,23 +14,25 @@ export default function CreateLabelForm({
   labelFormState,
   setLabelFormState,
 }) {
-  console.log(label);
-
   const [title, setTitle] = useState(label?.title || "");
   const [description, setDescription] = useState(label?.description || "");
   const [color, setColor] = useState(label?.color || "red");
-  const { setLabels } = useContext(LocalStorageContext);
+  const { setLabels, labels } = useContext(LocalStorageContext);
 
   function handleSubmit(e) {
     e.preventDefault();
 
     if (labelFormState == "edit") {
-      setLabels((prev) =>
-        prev.map((label) =>
-          label.id === label.id
-            ? { ...label, title, description, color }
-            : label
-        )
+      
+      setLabels(
+        labels.map((l) => {
+          if (l.id == label.id) {
+            l.title = title;
+            l.description = description;
+            l.color = color;
+          }
+          return l;
+        })
       );
     }
     if (labelFormState == "new") {
@@ -70,9 +72,10 @@ export default function CreateLabelForm({
         </p>
 
         <select
-          onSelect={(e) => setColor(e.target.value)}
+          onChange={(e) => setColor(e.target.value)}
           className="border px-2 py-1 rounded-lg"
           name="color"
+          value={color}
         >
           {Object.keys(LABELS_COLOR).map((color) => (
             <option className="bg-black" key={color} value={color}>

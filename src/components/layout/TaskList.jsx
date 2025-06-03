@@ -12,11 +12,10 @@ export default function TaskList({
   handleDrop,
   handleDeleteTask,
   handleDragOver,
-  labelFormState,
-  setLabelFormState,
 }) {
   const [showForm, setShowForm] = useState(false);
   const { labels, setLabels } = useContext(LocalStorageContext);
+  const [labelFormState, setLabelFormState] = useState("");
 
   function handleDragStart(e) {
     e.dataTransfer.setData("text/plain", e.currentTarget.dataset.id);
@@ -90,10 +89,11 @@ export default function TaskList({
         <CreateTaskForm setShowForm={setShowForm} defaultLabel={label.title} />
       )}
       {labelFormState === "edit" && (
-        <CreateLabelForm label={label} setLabelFormState={setLabelFormState} />
-      )}
-      {labelFormState === "new" && (
-        <CreateLabelForm setLabelFormState={setLabelFormState} />
+        <CreateLabelForm
+          label={label}
+          labelFormState={labelFormState}
+          setLabelFormState={setLabelFormState}
+        />
       )}
     </>
   );

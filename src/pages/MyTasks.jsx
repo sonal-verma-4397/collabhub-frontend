@@ -63,6 +63,13 @@ export default function MyTasks() {
       >
         <Plus />
       </span>
+
+      {labelFormState == "new" && (
+        <CreateLabelForm
+          labelFormState={labelFormState}
+          setLabelFormState={setLabelFormState}
+        />
+      )}
     </div>
   );
 }
