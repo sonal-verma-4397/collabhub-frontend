@@ -1,17 +1,15 @@
 import React, { useContext, useRef } from "react";
 import { TitleInput } from "../ui/Input";
 import { DescriptionInput } from "../ui/TextArea";
-import { LabelSelect, PrioritySelect } from "../ui/Select";
+import { LabelSelect } from "../ui/Select";
 import { AddTasktBtn, CloseBtn } from "../ui/Button";
-import { toasterContext } from "../../context/Toaster";
-import { taskContext } from "../../context/Task";
 import { LIMIT } from "../../data/constants";
 import LocalStorageContext from "../../context/LocalStorage";
+import { toasterContext } from "../../context/Toaster";
 
 export default function CreateTaskForm({ setShowForm, defaultLabel }) {
   const { showToast } = useContext(toasterContext);
-  const { setTasks } = useContext(taskContext);
-  const { labels } = useContext(LocalStorageContext);
+  const { labels,setTasks } = useContext(LocalStorageContext);
 
   const titleRef = useRef(null);
   const descriptionRef = useRef(null);

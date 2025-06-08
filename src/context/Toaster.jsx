@@ -1,8 +1,14 @@
-import { useCallback, useRef, useState } from "react";
-import { toasterContext } from "../context/Toaster";
+import { createContext, useCallback, useRef, useState } from "react";
+
+export const toasterContext = createContext({
+  toasts: [],
+  showToast: () => {},
+});
+
 let idCounter = 0;
 const TIME = 3000;
-export default function ToasterProvider({ children }) {
+
+export function ToasterProvider({ children }) {
   const [toasts, setToasts] = useState([]);
   const timeouts = useRef({});
 
