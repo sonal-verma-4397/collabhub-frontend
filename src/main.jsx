@@ -6,7 +6,7 @@ import ToasterProvider from "./provider/ToasterProvider.jsx";
 import TaskProvider from "./provider/TaskProvider.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Error from "./components/utility/Error.jsx";
-import Overview from "./pages/Overview.jsx";
+import Overview from "./pages/overview/Index.jsx";
 import Completed from "./pages/Completed.jsx";
 import Setting from "./pages/Setting.jsx";
 import { LocalStorageProvider } from "./context/LocalStorage.jsx";

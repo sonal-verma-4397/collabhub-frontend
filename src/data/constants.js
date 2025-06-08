@@ -71,6 +71,17 @@ export const LABELS_COLOR = {
   pink: "border-pink-500 bg-pink-100 text-pink-500",
 };
 
+export const COLOR_TO_HEX = {
+  red: "#ef4444",
+  yellow: "#facc15",
+  green: "#10b981",
+  blue: "#3b82f6",
+  gray: "#6b7280",
+  purple: "#a855f7",
+  orange: "#f59e0b",
+  pink: "#ec4899",
+};
+
 export const LIMIT = {
   title: 100,
   description: 200,
