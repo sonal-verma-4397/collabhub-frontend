@@ -1,17 +1,14 @@
 import React, { useContext, useState } from "react";
-import { LABELS, LABELS_COLOR, NEW_LABELS } from "../data/constants";
-import TaskList from "../components/layout/TaskList";
-import { taskContext } from "../context/Task";
-import { toasterContext } from "../context/Toaster";
+import { LABELS } from "../../data/constants";
+import TaskList from "./components/TaskList";
+import { toasterContext } from "../../context/Toaster";
 import { Plus } from "lucide-react";
-import CreateLabelForm from "../components/form/CreateLabelForm";
-import LocalStorageContext from "../context/LocalStorage";
+import CreateLabelForm from "../../components/form/CreateLabelForm";
+import LocalStorageContext from "../../context/LocalStorage";
 
-export default function MyTasks() {
+export default function Page() {
   const { showToast } = useContext(toasterContext);
   const { labels, tasks, setTasks } = useContext(LocalStorageContext);
-
-  console.log(tasks);
 
   const [labelFormState, setLabelFormState] = useState("");
 
@@ -19,18 +16,19 @@ export default function MyTasks() {
     const newLabel = e.currentTarget.dataset.label;
     const draggedTaskId = e.dataTransfer.getData("text/plain");
 
-    setTasks((prev) =>
-      prev.map((task) =>
-        task.id === draggedTaskId ? { ...task, label: newLabel } : task
-      )
-    );
-    const task = tasks.find((task) => task.id === draggedTaskId);
+    const mapToUpdatedLabel = (task) =>
+      task.id === draggedTaskId ? { ...task, label: newLabel } : task;
+    setTasks((prev) => prev.map(mapToUpdatedLabel));
+
+    const findByDraggedTaskId = (task) => task.id === draggedTaskId;
+    const task = tasks.find(findByDraggedTaskId);
     showToast(`${task.title} moved to ${LABELS[newLabel].title}`, "success");
   };
 
   const handleDeleteTask = (e) => {
     const taskId = e.currentTarget.dataset.id;
-    setTasks((prev) => prev.filter((task) => task.id !== taskId));
+    const filterByCurrentTaskId = (task) => task.id !== taskId;
+    setTasks((prev) => prev.filter(filterByCurrentTaskId));
     showToast("Task deleted successfully", "success");
   };
 
@@ -38,16 +36,14 @@ export default function MyTasks() {
     e.preventDefault();
   }
 
-  function labelFilter(label) {
-    return tasks.filter((task) => task.label === label);
-  }
+  const filterByLabel = (label) => tasks.filter((task) => task.label === label);
 
   function renderTaskList(label) {
     return (
       <TaskList
         key={label.id}
         label={label}
-        tasks={labelFilter(label.title)}
+        tasks={filterByLabel(label.title)}
         handleDrop={handleDrop}
         handleDragOver={handleDragOver}
         handleDeleteTask={handleDeleteTask}

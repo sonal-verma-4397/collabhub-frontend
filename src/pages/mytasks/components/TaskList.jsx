@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import Task from "../Task";
-import CreateTaskForm from "../form/CreateTaskForm";
-import { LABELS, LABELS_COLOR, NEW_LABELS } from "../../data/constants";
+import Task from "./Task";
+import CreateTaskForm from "../../../components/form/CreateTaskForm";
+import { LABELS, LABELS_COLOR, NEW_LABELS } from "../../../data/constants";
 import { Edit, Ellipsis, Trash } from "lucide-react";
-import LocalStorageContext from "../../context/LocalStorage";
-import CreateLabelForm from "../form/CreateLabelForm";
+import LocalStorageContext from "../../../context/LocalStorage";
+import CreateLabelForm from "../../../components/form/CreateLabelForm";
 
 export default function TaskList({
   label,

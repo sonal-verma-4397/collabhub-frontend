@@ -7,8 +7,9 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
+import { getColor } from "../utility/util";
 
-export default function MyPieChart({ tasks, labels, getColor }) {
+export default function MyPieChart({ tasks, labels }) {
   function mapToNameValueColor(label) {
     const filterByLabel = (task) => task.label === label.title;
     return {

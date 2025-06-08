@@ -8,6 +8,8 @@ import {
   YAxis,
 } from "recharts";
 
+import { getColor } from "../utility/util";
+
 function getDDMMTT(time) {
   return new Date(time).toLocaleString("en-GB", {
     day: "2-digit",
@@ -17,7 +19,7 @@ function getDDMMTT(time) {
   });
 }
 
-export default function MyAreaChart({ tasks, labels, getColor }) {
+export default function MyAreaChart({ tasks, labels }) {
   function groupTaskByTime(acc, task) {
     const time = getDDMMTT(task.createdAt);
 
@@ -25,7 +27,7 @@ export default function MyAreaChart({ tasks, labels, getColor }) {
       acc[time] = { time };
       labels.forEach((label) => (acc[time][label.title] = 0));
     }
-    
+
     const findByLabel = (label) => label.title === task.label;
     const matchedLabel = labels.find(findByLabel);
 

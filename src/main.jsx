@@ -6,7 +6,7 @@ import ToasterProvider from "./provider/ToasterProvider.jsx";
 import TaskProvider from "./provider/TaskProvider.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Error from "./components/utility/Error.jsx";
-import Overview from "./pages/overview/Index.jsx";
+import Overview from "./pages/overview/Page.jsx";
 import Completed from "./pages/Completed.jsx";
 import Setting from "./pages/Setting.jsx";
 import { LocalStorageProvider } from "./context/LocalStorage.jsx";
@@ -30,7 +30,7 @@ const router = createBrowserRouter(
           lazy: async function lazyLoadMyTasks() {
             const [{ default: Component }, { default: loader }] =
               await Promise.all([
-                import("./pages/MyTasks.jsx"),
+                import("./pages/mytasks/Page.jsx"),
                 import("./loader/MyTasksLoader.jsx"),
               ]);
             return { Component, loader };

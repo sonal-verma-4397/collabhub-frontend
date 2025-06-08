@@ -1,5 +1,5 @@
 import React from "react";
-import { LABELS_COLOR } from "../../data/constants";
+import { LABELS_COLOR } from "../../../data/constants";
 
 export default function LabelSummery({ labels, tasks }) {
   function renderLabel(label) {
