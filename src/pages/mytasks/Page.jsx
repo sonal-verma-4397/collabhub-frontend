@@ -54,7 +54,7 @@ export default function Page() {
   }
 
   return (
-    <div className="flex gap-2 w-[1456px] h-[760px] overflow-auto ">
+    <div className="flex gap-2 w-[1456px] overflow-auto ">
       {labels.map(renderTaskList)}
       <span
         onClick={() => setLabelFormState("new")}
