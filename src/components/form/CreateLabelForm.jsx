@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { LABELS_COLOR, LIMIT } from "../../data/constants";
 import LocalStorageContext from "../../context/LocalStorage";
 function capitalizeEachWord(str) {
   return str
-    .toLowerCase() // optional: makes sure first letter stands out
+    .toLowerCase()
     .split(" ")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
@@ -23,7 +23,6 @@ export default function CreateLabelForm({
     e.preventDefault();
 
     if (labelFormState == "edit") {
-      
       setLabels(
         labels.map((l) => {
           if (l.id == label.id) {

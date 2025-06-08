@@ -1,10 +1,10 @@
 import React, { useContext, useState } from "react";
 import { LABELS } from "../../data/constants";
 import TaskList from "./components/TaskList";
-import { toasterContext } from "../../context/Toaster";
 import { Plus } from "lucide-react";
 import CreateLabelForm from "../../components/form/CreateLabelForm";
 import LocalStorageContext from "../../context/LocalStorage";
+import { toasterContext } from "../../context/Toaster";
 
 export default function Page() {
   const { showToast } = useContext(toasterContext);
