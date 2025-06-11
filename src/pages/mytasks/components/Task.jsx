@@ -22,25 +22,28 @@ export default function Task({
   };
 
   return (
-    <div
-      data-id={id}
-      draggable
-      onDragStart={handleDragStart}
-      className="group justify-between flex cursor-grab select-none m-2 bg-white dark:bg-gray-900 rounded-md p-5 shadow-md hover:shadow-xl transition-shadow duration-300 border dark:border-gray-700"
-    >
-      <div>
-        <h2 className="text-xl font-bold text-gray-800 dark:text-white">
-          {title}
-        </h2>
-        <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
-          {description}
-        </p>
-      </div>
-      <Menu
+    <>
+      <div
         data-id={id}
-        onDelete={() => handleDeleteTask(id)}
-        onEdit={() => setShowTaskForm(true)}
-      />
+        draggable
+        onDragStart={handleDragStart}
+        className="group justify-between flex cursor-grab select-none m-2 bg-white dark:bg-gray-900 rounded-md p-5 shadow-md hover:shadow-xl transition-shadow duration-300 border dark:border-gray-700"
+      >
+        <div>
+          <h2 className="text-xl font-bold text-gray-800 dark:text-white">
+            {title}
+          </h2>
+          <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
+            {description}
+          </p>
+        </div>
+        <Menu
+          data-id={id}
+          onDelete={() => handleDeleteTask(id)}
+          onEdit={() => setShowTaskForm(true)}
+          positionClass="top-6 right-0"
+        />
+      </div>
       {showTaskForm && (
         <TaskForm
           isEdit={true}
@@ -48,6 +51,6 @@ export default function Task({
           closeForm={() => setShowTaskForm(false)}
         />
       )}
-    </div>
+    </>
   );
 }

@@ -62,7 +62,11 @@ export default function TaskList({ label, tasks, handleDrop, handleDragOver }) {
             } rounded-full`}
           ></div>
           <span>{label.title}</span>
-          <Menu onDelete={handleDeleteList} onEdit={handleEditLabel} />
+          <Menu
+            onDelete={handleDeleteList}
+            onEdit={handleEditLabel}
+            positionClass="top-8 right-0"
+          />
         </h2>
         <div className="h-[730px] overflow-y-auto">
           {sortedTasks.map(renderTask)}

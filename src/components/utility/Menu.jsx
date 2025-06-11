@@ -1,7 +1,12 @@
 import { Edit, Ellipsis, Trash } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-export default function Menu({ onDelete, onEdit, ...props }) {
+export default function Menu({
+  onDelete,
+  onEdit,
+  positionClass = "top-0 right-0",
+  ...props
+}) {
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef(null);
 
@@ -22,14 +27,16 @@ export default function Menu({ onDelete, onEdit, ...props }) {
       ref={menuRef}
     >
       <span
-        className="cursor-pointer  "
+        className="cursor-pointer "
         onClick={() => setShowMenu((prev) => !prev)}
       >
         <Ellipsis />
       </span>
 
       {showMenu && (
-        <ul className="absolute flex flex-col gap-2 top-12 right-0 bg-white dark:bg-[#1a1b1e] rounded-md shadow-md">
+        <ul
+          className={`absolute flex flex-col gap-2 bg-white dark:bg-[#1a1b1e] rounded-md shadow-md z-10 ${positionClass}`}
+        >
           <button
             className="text-red-500 rounded-md flex items-center gap-2 cursor-pointer px-3 py-2 hover:bg-gray-100 dark:hover:bg-[#2a2a2e]"
             onClick={() => {

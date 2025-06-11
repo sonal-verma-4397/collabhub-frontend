@@ -71,7 +71,7 @@ export default function TaskForm({
     setTasks(tasks.map(mapToModifiedTask));
     showToast("task updated");
   }
-  
+
   function handleSubmit(e) {
     e.preventDefault();
     isEdit ? editTask() : createTask();
@@ -87,7 +87,9 @@ export default function TaskForm({
         className="w-full max-w-md bg-white dark:bg-[#121316] dark:text-white p-6 rounded-xl shadow-lg space-y-4"
         onSubmit={handleSubmit}
       >
-        <h2 className="text-xl font-semibold mb-2 text-center">Create Task</h2>
+        <h2 className="text-xl font-semibold mb-2 text-center">
+          {isEdit ? "Update Task" : "Create Task"}
+        </h2>
 
         <div className="flex flex-col gap-2">
           <TitleInput
