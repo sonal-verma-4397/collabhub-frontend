@@ -9,7 +9,7 @@ export default function App() {
   const [showSidebar, setShowSidebar] = useState(false);
 
   return (
-    <div className="flex gap-2 w-screen h-screen overflow-hidden bg-[#f4fbf9] dark:bg-black p-2 dark:text-white">
+    <div className="flex gap-2 w-screen h-screen overflow-hidden bg-[#f4fbf9] dark:bg-black  dark:text-white">
       <Toast />
       <Sidebar
         open={showSidebar}

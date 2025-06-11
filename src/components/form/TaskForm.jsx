@@ -1,5 +1,5 @@
 import React, { useContext, useRef, useState } from "react";
-import { TitleInput } from "../ui/Input";
+import { DateInput, TitleInput } from "../ui/Input";
 import { DescriptionInput } from "../ui/TextArea";
 import { LabelSelect } from "../ui/Select";
 import { AddBtn, CloseBtn } from "../ui/Button";
@@ -17,6 +17,7 @@ export default function TaskForm({
   const { labels, tasks, setTasks } = useContext(LocalStorageContext);
 
   const [title, setTitle] = useState(isEdit ? oldTask.title : "");
+  const [dueDate, setDueDate] = useState(isEdit ? oldTask.dueDate : "");
   const [description, setDescription] = useState(
     isEdit ? oldTask.description : ""
   );
@@ -48,6 +49,7 @@ export default function TaskForm({
       title,
       description: description || "no description found",
       label,
+      dueDate: dueDate ? new Date(dueDate).toISOString() : dueDate, // ⬅️ formatted
       createdAt,
       updatedAt,
     };
@@ -64,7 +66,8 @@ export default function TaskForm({
       if (task.id === oldTask.id) {
         (task.title = title),
           (task.description = description),
-          (task.label = label);
+          (task.label = label),
+          (task.dueDate = dueDate);
       }
       return task;
     }
@@ -98,6 +101,10 @@ export default function TaskForm({
             maxLength={LIMIT.title}
           />
           <span className="text-sm opacity-45">{`${title.length}/${LIMIT.title}`}</span>
+          <DateInput
+            value={dueDate}
+            onChange={(e) => setDueDate(e.target.value)}
+          />
           <LabelSelect
             onChange={(e) => setLabel(e.target.value)}
             value={label}
