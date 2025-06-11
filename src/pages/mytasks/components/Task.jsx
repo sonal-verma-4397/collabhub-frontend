@@ -1,17 +1,25 @@
-import React from "react";
-import { CalendarDays, Clock, Trash } from "lucide-react"; // Optional icons (you can swap these)
+import React, { useContext, useState } from "react";
+import Menu from "../../../components/utility/Menu";
+import LocalStorageContext from "../../../context/LocalStorage";
+import { toasterContext } from "../../../context/Toaster";
+import TaskForm from "../../../components/form/TaskForm";
 
 export default function Task({
   id,
   title,
   description,
   label,
-  priority,
-  createdAt,
-  updatedAt,
-  handleDeleteTask,
   handleDragStart,
 }) {
+  const { setTasks } = useContext(LocalStorageContext);
+  const { showToast } = useContext(toasterContext);
+  const [showTaskForm, setShowTaskForm] = useState(false);
+
+  const handleDeleteTask = (id) => {
+    const filterByCurrentTaskId = (task) => task.id !== id;
+    setTasks((prev) => prev.filter(filterByCurrentTaskId));
+    showToast("Task deleted successfully", "success");
+  };
 
   return (
     <div
@@ -28,14 +36,18 @@ export default function Task({
           {description}
         </p>
       </div>
-
-      <button
+      <Menu
         data-id={id}
-        className="cursor-pointer text-red-600 hover:text-red-800  group-hover:block transition"
-        onClick={handleDeleteTask}
-      >
-        <Trash size={20} />
-      </button>
+        onDelete={() => handleDeleteTask(id)}
+        onEdit={() => setShowTaskForm(true)}
+      />
+      {showTaskForm && (
+        <TaskForm
+          isEdit={true}
+          oldTask={{ id, title, description, label }}
+          closeForm={() => setShowTaskForm(false)}
+        />
+      )}
     </div>
   );
 }

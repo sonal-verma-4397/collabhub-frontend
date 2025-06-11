@@ -1,15 +1,15 @@
-export function CreateTaskBtn({ label, ...props }) {
+export function CreateBtn({ label, ...props }) {
   return (
     <button
-      className="px-4 py-2 m-2 w-fit rounded-lg bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition duration-200"
       {...props}
+      className="dark:text-white py-2 text-center cursor-pointer hover:bg-[#1A1B1E]"
     >
       {label}
     </button>
   );
 }
 
-export function AddTasktBtn({ label, ...props }) {
+export function AddBtn({ label, ...props }) {
   return (
     <button
       className="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
