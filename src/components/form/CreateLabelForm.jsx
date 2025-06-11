@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { LABELS_COLOR, LIMIT } from "../../data/constants";
 import LocalStorageContext from "../../context/LocalStorage";
+
 function capitalizeEachWord(str) {
   return str
     .toLowerCase()

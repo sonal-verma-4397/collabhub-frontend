@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { TitleInput } from "../ui/Input";
 import { DescriptionInput } from "../ui/TextArea";
 import { LabelSelect } from "../ui/Select";
@@ -9,7 +9,9 @@ import { toasterContext } from "../../context/Toaster";
 
 export default function CreateTaskForm({ setShowForm, defaultLabel }) {
   const { showToast } = useContext(toasterContext);
-  const { labels,setTasks } = useContext(LocalStorageContext);
+  const { labels, setTasks } = useContext(LocalStorageContext);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
 
   const titleRef = useRef(null);
   const descriptionRef = useRef(null);
@@ -36,7 +38,6 @@ export default function CreateTaskForm({ setShowForm, defaultLabel }) {
     e.preventDefault();
     const title = titleRef.current.value;
     const description = descriptionRef.current.value || "no description found";
-    // const priority = priorityRef.current.value;
     const label = labelRef.current.value;
     const createdAt = new Date().toISOString();
     const updatedAt = createdAt;
@@ -74,15 +75,24 @@ export default function CreateTaskForm({ setShowForm, defaultLabel }) {
       >
         <h2 className="text-xl font-semibold mb-2 text-center">Create Task</h2>
 
-        <div className="space-y-3">
-          <TitleInput ref={titleRef} />
-          <span>{titleRef.current?.value.length}</span>
+        <div className="flex flex-col gap-2">
+          <TitleInput
+            ref={titleRef}
+            onChange={(e) => setTitle(e.target.value)}
+            maxLength={LIMIT.title}
+          />
+          <span className="text-sm opacity-45">{`${title.length}/${LIMIT.title}`}</span>
           <LabelSelect
             ref={labelRef}
             labels={labels}
             defaultValue={defaultLabel}
           />
-          <DescriptionInput ref={descriptionRef} />
+          <DescriptionInput
+            ref={descriptionRef}
+            onChange={(e) => setDescription(e.target.value)}
+            maxLength={LIMIT.description}
+          />
+          <span className="text-sm opacity-45">{`${description.length}/${LIMIT.description}`}</span>
         </div>
 
         <div className="flex justify-end space-x-3 pt-4">
