@@ -2,20 +2,25 @@ import React, { useContext, useRef, useState } from "react";
 import { TitleInput } from "../ui/Input";
 import { DescriptionInput } from "../ui/TextArea";
 import { LabelSelect } from "../ui/Select";
-import { AddTasktBtn, CloseBtn } from "../ui/Button";
+import { AddBtn, CloseBtn } from "../ui/Button";
 import { LIMIT } from "../../data/constants";
 import LocalStorageContext from "../../context/LocalStorage";
 import { toasterContext } from "../../context/Toaster";
 
-export default function CreateTaskForm({ setShowForm, defaultLabel }) {
+export default function TaskForm({
+  closeForm,
+  defaultLabel,
+  isEdit = false,
+  oldTask,
+}) {
   const { showToast } = useContext(toasterContext);
-  const { labels, setTasks } = useContext(LocalStorageContext);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const { labels, tasks, setTasks } = useContext(LocalStorageContext);
 
-  const titleRef = useRef(null);
-  const descriptionRef = useRef(null);
-  const labelRef = useRef(null);
+  const [title, setTitle] = useState(isEdit ? oldTask.title : "");
+  const [description, setDescription] = useState(
+    isEdit ? oldTask.description : ""
+  );
+  const [label, setLabel] = useState(isEdit ? oldTask.label : defaultLabel);
 
   function validateTask(task) {
     if (task.title.length === 0) {
@@ -34,38 +39,47 @@ export default function CreateTaskForm({ setShowForm, defaultLabel }) {
     return true;
   }
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    const title = titleRef.current.value;
-    const description = descriptionRef.current.value || "no description found";
-    const label = labelRef.current.value;
+  function createTask() {
     const createdAt = new Date().toISOString();
     const updatedAt = createdAt;
 
     const task = {
       id: `task-${new Date().getTime()}`,
       title,
-      description,
-      // priority,
+      description: description || "no description found",
       label,
       createdAt,
       updatedAt,
     };
 
-    if (!validateTask(task)) return;
+    if (!validateTask(task)) throw new Error("validation fail");
 
     setTasks((prevTasks) => [...prevTasks, task]);
-    showToast(`${titleRef.current.value} added successfully`);
+    showToast(`${title} added successfully`);
     console.log(task);
   }
 
-  function handleFormClose() {
-    setShowForm(false);
+  function editTask() {
+    function mapToModifiedTask(task) {
+      if (task.id === oldTask.id) {
+        (task.title = title),
+          (task.description = description),
+          (task.label = label);
+      }
+      return task;
+    }
+    setTasks(tasks.map(mapToModifiedTask));
+    showToast("task updated");
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    isEdit ? editTask() : createTask();
   }
 
   return (
     <div
-      onClick={handleFormClose}
+      onClick={closeForm}
       className="fixed inset-0 bg-opacity-30 flex items-center justify-center z-50"
     >
       <form
@@ -73,22 +87,25 @@ export default function CreateTaskForm({ setShowForm, defaultLabel }) {
         className="w-full max-w-md bg-white dark:bg-[#121316] dark:text-white p-6 rounded-xl shadow-lg space-y-4"
         onSubmit={handleSubmit}
       >
-        <h2 className="text-xl font-semibold mb-2 text-center">Create Task</h2>
+        <h2 className="text-xl font-semibold mb-2 text-center">
+          {isEdit ? "Update Task" : "Create Task"}
+        </h2>
 
         <div className="flex flex-col gap-2">
           <TitleInput
-            ref={titleRef}
+            value={title}
             onChange={(e) => setTitle(e.target.value)}
             maxLength={LIMIT.title}
           />
           <span className="text-sm opacity-45">{`${title.length}/${LIMIT.title}`}</span>
           <LabelSelect
-            ref={labelRef}
+            onChange={(e) => setLabel(e.target.value)}
+            value={label}
             labels={labels}
             defaultValue={defaultLabel}
           />
           <DescriptionInput
-            ref={descriptionRef}
+            value={description}
             onChange={(e) => setDescription(e.target.value)}
             maxLength={LIMIT.description}
           />
@@ -96,8 +113,8 @@ export default function CreateTaskForm({ setShowForm, defaultLabel }) {
         </div>
 
         <div className="flex justify-end space-x-3 pt-4">
-          <CloseBtn label="Close" onClick={handleFormClose} />
-          <AddTasktBtn label="Save" />
+          <CloseBtn label="Close" onClick={closeForm} />
+          <AddBtn label="Save" />
         </div>
       </form>
     </div>
