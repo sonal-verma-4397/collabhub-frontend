@@ -4,6 +4,13 @@
 
 ---
 
+## 📸 Screenshot
+
+![image](https://github.com/user-attachments/assets/ad012841-0213-44c0-afea-dd1058b21c49)
+![image](https://github.com/user-attachments/assets/c3292be4-df41-47b3-9fc1-80971ddbcacc)
+
+---
+
 ## 🧠 Features
 
 * ✅ Add, update, and delete tasks
@@ -31,12 +38,6 @@
 * 🔧 **Todo**: Tasks selected for upcoming sprints
 * 🚧 **In Progress**: Tasks currently being developed
 * ✅ **Completed**: Finished tasks
-
----
-
-## 📸 Screenshot
-
-![ProjectSync Screenshot](./snapshots/Screenshot%202025-05-27%20213847.png)
 
 ---
 
