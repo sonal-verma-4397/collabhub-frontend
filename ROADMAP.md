@@ -16,7 +16,7 @@ A planned progression of ProjectSync to transform it into a complete software pr
 
 ## ✨ Version 1.1.0 - Task Enhancements
 
-- [ ] Add due dates to tasks
+- [x] Add due dates to tasks
 - [ ] Add priority levels (Low, Medium, High)
 - [x] Edit task title and description
 - [ ] Highlight overdue tasks (Overview page)
