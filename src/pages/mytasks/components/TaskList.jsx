@@ -29,6 +29,7 @@ export default function TaskList({ label, tasks, handleDrop, handleDragOver }) {
         title={task.title}
         description={task.description}
         label={task.label}
+        dueDate={task.dueDate}
         priority={task.priority}
         createdAt={task.createdAt}
         updatedAt={task.updatedAt}
@@ -79,6 +80,7 @@ export default function TaskList({ label, tasks, handleDrop, handleDragOver }) {
         />
       </section>
 
+      {/* Pop Up Components */}
       {showTaskForm && (
         <TaskForm
           closeForm={() => setShowTaskForm(false)}
