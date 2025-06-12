@@ -18,12 +18,13 @@ A planned progression of ProjectSync to transform it into a complete software pr
 
 - [x] Add due dates to tasks
 - [x] Edit task title and description
-- [ ] Highlight overdue tasks.
+- [x] Highlight overdue tasks.
 
 ---
 
 ## 🌍 Version 1.2.0 - Filtering and Tags
 
+- [ ] View Task in pop with all details of task.
 - [ ] Add tags/labels to tasks (e.g., bug, feature, research)
 - [ ] Filter tasks by tag or status
 - [ ] Search tasks by title
