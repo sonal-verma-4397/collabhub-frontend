@@ -13,6 +13,22 @@ function dueDateFormater(dueDate) {
   });
 }
 
+function getOverDue(dueDate) {
+  if (!dueDate) return null;
+
+  const due = new Date(dueDate);
+  const today = new Date();
+
+  // Normalize to ignore time
+  due.setHours(0, 0, 0, 0);
+  today.setHours(0, 0, 0, 0);
+
+  const diffInMs = today - due;
+  const daysOverdue = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+
+  return daysOverdue > 0 ? daysOverdue : null;
+}
+
 export default function Task({
   id,
   title,
@@ -30,6 +46,8 @@ export default function Task({
     setTasks((prev) => prev.filter(filterByCurrentTaskId));
     showToast("Task deleted successfully", "success");
   };
+
+  const daysOverdue = getOverDue(dueDate);
 
   return (
     <>
@@ -53,10 +71,16 @@ export default function Task({
             positionClass="top-6 right-0"
           />
         </span>
-        <span className="italic font-extralight text-xs flex gap-2 items-center text-gray-500 dark:text-gray-400 mt-2">
-          <Clock size={14} />
-          {dueDate ? dueDateFormater(dueDate) : "No due date"}
-        </span>
+        <div className="flex flex-col">
+          <span className="italic font-extralight text-xs flex gap-2 items-center text-gray-500 dark:text-gray-400 mt-2">
+            <Clock size={14} />
+            {dueDate ? dueDateFormater(dueDate) : "No due date"}
+          </span>
+          <span className="italic font-extralight text-xs flex gap-2 items-center text-yellow-500 dark:text-yellow-400 mt-2">
+            {daysOverdue &&
+              `⚠️ ${daysOverdue} day${daysOverdue > 1 ? "s" : ""} overdue`}
+          </span>
+        </div>
       </div>
       {showTaskForm && (
         <TaskForm
