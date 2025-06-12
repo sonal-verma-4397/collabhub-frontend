@@ -7,6 +7,18 @@ import { LIMIT } from "../../data/constants";
 import LocalStorageContext from "../../context/LocalStorage";
 import { toasterContext } from "../../context/Toaster";
 
+function isValidDueDate(dueDate) {
+  if (!dueDate) return true;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Set to start of the day
+
+  const inputDate = new Date(dueDate);
+  inputDate.setHours(0, 0, 0, 0); // Ignore time, compare only date
+
+  return inputDate >= today;
+}
+
 export default function TaskForm({
   closeForm,
   defaultLabel,
@@ -24,20 +36,26 @@ export default function TaskForm({
   const [label, setLabel] = useState(isEdit ? oldTask.label : defaultLabel);
 
   function validateTask(task) {
-    if (task.title.length === 0) {
-      showToast("Title is required", "error");
-      return false;
-    }
+    switch (true) {
+      case task.title.length === 0:
+        showToast("Title is required", "error");
+        return false;
 
-    if (task.title.length > LIMIT.title) {
-      showToast("Title must be less than 100 characters", "error");
-      return false;
+      case task.title.length > LIMIT.title:
+        showToast("Title must be less than 100 characters", "error");
+        return false;
+
+      case task.description.length > LIMIT.description:
+        showToast("Description must be less than 200 characters", "error");
+        return false;
+
+      case !isValidDueDate(task.dueDate):
+        showToast("Select a valid date", "error");
+        return false;
+
+      default:
+        return true;
     }
-    if (task.description.length > LIMIT.description) {
-      showToast("Description must be less than 200 characters", "error");
-      return false;
-    }
-    return true;
   }
 
   function createTask() {
@@ -62,12 +80,24 @@ export default function TaskForm({
   }
 
   function editTask() {
+    const modifiedTask = {
+      title,
+      description,
+      label,
+      dueDate,
+    };
+
+    if (!validateTask(modifiedTask)) {
+      showToast(`Task validation failed`, "error");
+      throw new Error(`Task validation failed`);
+    }
+
     function mapToModifiedTask(task) {
       if (task.id === oldTask.id) {
-        (task.title = title),
-          (task.description = description),
-          (task.label = label),
-          (task.dueDate = dueDate);
+        (task.title = modifiedTask.title),
+          (task.description = modifiedTask.description),
+          (task.label = modifiedTask.label),
+          (task.dueDate = modifiedTask.dueDate);
       }
       return task;
     }
