@@ -5,40 +5,48 @@ import LocalStorageContext from "../../context/LocalStorage";
 import { filterTasksByLabel } from "../../utils/filters";
 import { AddNewLabelBtn } from "../../components/ui/Button";
 import useDragDrop from "./hooks/useDragDrop";
+import Search from "./components/Search";
 
 export default function Page() {
   const { labels, tasks } = useContext(LocalStorageContext);
   const [showLabelForm, setShowLabelForm] = useState(false);
   const { handleDrop } = useDragDrop();
-
-  const [title, setTitle] = useState("");
+  const [query, setQuery] = useState("");
+  const [queryFilter, setQueryFilter] = useState("TITLE_FILTER");
 
   function mapToTaskList(label) {
     const tasksByLabel = filterTasksByLabel(tasks, label.title);
-    const filterByInputTitle = (task) => task.title.startsWith(title.trim());
+    const filterByTitleQuery = (task) =>
+      task.title.toLowerCase().startsWith(query.trim().toLowerCase());
+    const filterByDescriptionQuery = (task) =>
+      task.description.toLowerCase().startsWith(query.trim().toLowerCase());
+
+    const FILTER = {
+      TITLE_FILTER: filterByTitleQuery,
+      DESCRIPTION_FILTER: filterByDescriptionQuery,
+    };
 
     return (
       <TaskList
         key={label.id}
         label={label}
-        tasks={tasksByLabel.filter(filterByInputTitle)}
+        tasks={tasksByLabel.filter(FILTER[queryFilter])}
         handleDrop={handleDrop}
       />
     );
   }
 
   useEffect(() => {
-    console.log(title);
-  }, [title]);
+    console.log(query);
+  }, [query]);
   return (
     <div>
-      <section>
-        <input
-          className="m-1 p-1 rounded-lg px-2 dark:bg-[#131416]"
-          type="text"
-          onChange={(e) => setTitle(e.target.value)}
-          value={title}
-          placeholder="Search by title"
+      <section className="m-1 flex gap-2">
+        <Search
+          query={query}
+          setQuery={setQuery}
+          queryFilter={queryFilter}
+          setQueryFilter={setQueryFilter}
         />
       </section>
       <section className="flex gap-2 w-[1456px] overflow-auto ">
