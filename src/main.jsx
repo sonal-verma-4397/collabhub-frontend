@@ -9,12 +9,13 @@ import Completed from "./pages/Completed.jsx";
 import Setting from "./pages/Setting.jsx";
 import { LocalStorageProvider } from "./context/LocalStorage.jsx";
 import { ToasterProvider } from "./context/Toaster.jsx";
+import { TaskPreviewProvider } from "./context/TaskPreview.jsx";
 
 const router = createBrowserRouter(
   [
     {
       path: "/",
-      element: <App   />,
+      element: <App />,
       children: [
         {
           index: true,
@@ -58,13 +59,15 @@ const router = createBrowserRouter(
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <LocalStorageProvider>
-      <ToasterProvider>
-        <Suspense
-          fallback={<div className="text-center mt-10">Loading app...</div>}
-        >
-          <RouterProvider router={router} />
-        </Suspense>
-      </ToasterProvider>
+      <TaskPreviewProvider>
+        <ToasterProvider>
+          <Suspense
+            fallback={<div className="text-center mt-10">Loading app...</div>}
+          >
+            <RouterProvider router={router} />
+          </Suspense>
+        </ToasterProvider>
+      </TaskPreviewProvider>
     </LocalStorageProvider>
   </StrictMode>
 );

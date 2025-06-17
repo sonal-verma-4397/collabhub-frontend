@@ -6,12 +6,18 @@ import { filterTasksByLabel } from "../../utils/filters";
 import { AddNewLabelBtn } from "../../components/ui/Button";
 import useDragDrop from "./hooks/useDragDrop";
 import Search from "./components/Search";
+import {
+  TaskPreviewContext,
+  TaskPreviewProvider,
+} from "../../context/TaskPreview";
+import TaskPrivew from "./components/TaskPrivew";
 
 export default function Page() {
   const { labels, tasks } = useContext(LocalStorageContext);
-  const [showLabelForm, setShowLabelForm] = useState(false);
+  const { taskPreview } = useContext(TaskPreviewContext);
   const { handleDrop } = useDragDrop();
   const [query, setQuery] = useState("");
+  const [showLabelForm, setShowLabelForm] = useState(false);
   const [queryFilter, setQueryFilter] = useState("TITLE_FILTER");
 
   function mapToTaskList(label) {
@@ -54,6 +60,8 @@ export default function Page() {
         <AddNewLabelBtn openLabelForm={setShowLabelForm} />
         {showLabelForm && <LabelForm closeForm={setShowLabelForm} />}
       </section>
+
+      {taskPreview && <TaskPrivew />}
     </div>
   );
 }
