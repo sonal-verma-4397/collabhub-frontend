@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { LABELS } from "../../../data/constants";
 import LocalStorageContext from "../../../context/LocalStorage";
 import { toasterContext } from "../../../context/Toaster";
 
@@ -17,7 +16,7 @@ export default function useDragDrop() {
 
     const findByDraggedTaskId = (task) => task.id === draggedTaskId;
     const task = tasks.find(findByDraggedTaskId);
-    showToast(`${task.title} moved to ${LABELS[newLabel].title}`, "success");
+    showToast(`${task.title} moved to ${newLabel}`, "success");
   };
 
   return { handleDrop };

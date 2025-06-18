@@ -1,9 +1,9 @@
 import { createContext, useEffect, useState } from "react";
-import { NEW_LABELS } from "../data/constants";
+import { DEFAULT_LABELS } from "../data/constants";
 
 function initializeStorage() {
   localStorage.setItem("tasks", JSON.stringify([]));
-  localStorage.setItem("labels", JSON.stringify(NEW_LABELS));
+  localStorage.setItem("labels", JSON.stringify(DEFAULT_LABELS));
   localStorage.setItem("initialized", "true"); // mark as initialized
 }
 
