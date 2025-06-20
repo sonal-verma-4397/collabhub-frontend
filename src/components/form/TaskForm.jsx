@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { DateInput, TitleInput } from "../ui/Input";
+import { DateInput, TagInput, TitleInput } from "../ui/Input";
 import { DescriptionInput } from "../ui/TextArea";
 import { LabelSelect } from "../ui/Select";
 import { AddBtn, CloseBtn } from "../ui/Button";
@@ -21,6 +21,7 @@ export default function TaskForm({
     description: isEdit ? oldTask.description : "no description found",
     label: isEdit ? oldTask.label : defaultLabel,
     dueDate: isEdit ? oldTask.dueDate : "",
+    tags: isEdit ? oldTask.tags : [],
   });
 
   function handleSubmit(e) {
@@ -75,6 +76,21 @@ export default function TaskForm({
             value={taskInput.label}
             labels={labels}
             defaultValue={defaultLabel}
+          />
+          <TagInput
+            selectedTags={taskInput.tags}
+            onChange={(e, tag) => {
+              e.target.checked
+                ? setTaskInput((prev) => {
+                    return { ...prev, tags: [...prev.tags, tag] };
+                  })
+                : setTaskInput((prev) => {
+                    return {
+                      ...prev,
+                      tags: [...prev.tags.filter((t) => t.title != tag.title)],
+                    };
+                  });
+            }}
           />
           <DescriptionInput
             value={taskInput.description}
