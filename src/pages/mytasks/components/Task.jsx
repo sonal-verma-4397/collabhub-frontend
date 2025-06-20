@@ -5,6 +5,7 @@ import { toasterContext } from "../../../context/Toaster";
 import TaskForm from "../../../components/form/TaskForm";
 import { Clock } from "lucide-react";
 import { dueDateFormater } from "../../../utils/formaters";
+import { TaskPreviewContext } from "../../../context/TaskPreview";
 
 function getOverDue(dueDate) {
   if (!dueDate) return null;
@@ -22,16 +23,12 @@ function getOverDue(dueDate) {
   return daysOverdue > 0 ? daysOverdue : null;
 }
 
-export default function Task({
-  id,
-  title,
-  description,
-  label,
-  dueDate,
-  handleDragStart,
-}) {
+export default function Task({ handleDragStart, ...task }) {
+  const { id, title, description, label, dueDate } = task;
   const { setTasks } = useContext(LocalStorageContext);
   const { showToast } = useContext(toasterContext);
+  const { setTaskPreview } = useContext(TaskPreviewContext);
+
   const [showTaskForm, setShowTaskForm] = useState(false);
 
   const deleteTask = (id) => {
@@ -51,7 +48,12 @@ export default function Task({
         className="group relative justify-between items-center flex cursor-grab select-none m-2 bg-white dark:bg-[#0F0F0F] rounded-md p-4 shadow-md hover:shadow-xl transition-shadow duration-300 border dark:border-[#2B2B2B]"
       >
         <div>
-          <h2 className="text-xl  text-gray-800 dark:text-white">{title}</h2>
+          <button
+            onClick={() => setTaskPreview({ ...task })}
+            className="text-xl hover:underline cursor-pointer text-gray-800 dark:text-white"
+          >
+            {title}
+          </button>
           <p className="text-sm text-gray-600 font-thin dark:text-gray-300 mt-1">
             {description}
           </p>

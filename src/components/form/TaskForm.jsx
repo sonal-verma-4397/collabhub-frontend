@@ -1,23 +1,12 @@
-import React, { useContext, useRef, useState } from "react";
-import { DateInput, TitleInput } from "../ui/Input";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { DateInput, TagInput, TitleInput } from "../ui/Input";
 import { DescriptionInput } from "../ui/TextArea";
 import { LabelSelect } from "../ui/Select";
 import { AddBtn, CloseBtn } from "../ui/Button";
 import { LIMIT } from "../../data/constants";
 import LocalStorageContext from "../../context/LocalStorage";
 import { toasterContext } from "../../context/Toaster";
-
-function isValidDueDate(dueDate) {
-  if (!dueDate) return true;
-
-  const today = new Date();
-  today.setHours(0, 0, 0, 0); // Set to start of the day
-
-  const inputDate = new Date(dueDate);
-  inputDate.setHours(0, 0, 0, 0); // Ignore time, compare only date
-
-  return inputDate >= today;
-}
+import { createTask, editTask } from "../../utils/Task";
 
 export default function TaskForm({
   closeForm,
@@ -26,88 +15,20 @@ export default function TaskForm({
   oldTask,
 }) {
   const { showToast } = useContext(toasterContext);
-  const { labels, tasks, setTasks } = useContext(LocalStorageContext);
-
-  const [title, setTitle] = useState(isEdit ? oldTask.title : "");
-  const [dueDate, setDueDate] = useState(isEdit ? oldTask.dueDate : "");
-  const [description, setDescription] = useState(
-    isEdit ? oldTask.description : ""
-  );
-  const [label, setLabel] = useState(isEdit ? oldTask.label : defaultLabel);
-
-  function validateTask(task) {
-    switch (true) {
-      case task.title.length === 0:
-        showToast("Title is required", "error");
-        return false;
-
-      case task.title.length > LIMIT.title:
-        showToast("Title must be less than 100 characters", "error");
-        return false;
-
-      case task.description.length > LIMIT.description:
-        showToast("Description must be less than 200 characters", "error");
-        return false;
-
-      case !isValidDueDate(task.dueDate):
-        showToast("Select a valid date", "error");
-        return false;
-
-      default:
-        return true;
-    }
-  }
-
-  function createTask() {
-    const createdAt = new Date().toISOString();
-    const updatedAt = createdAt;
-
-    const task = {
-      id: `task-${new Date().getTime()}`,
-      title,
-      description: description || "no description found",
-      label,
-      dueDate: dueDate ? new Date(dueDate).toISOString() : dueDate, // ⬅️ formatted
-      createdAt,
-      updatedAt,
-    };
-
-    if (!validateTask(task)) throw new Error("validation fail");
-
-    setTasks((prevTasks) => [...prevTasks, task]);
-    showToast(`${title} added successfully`);
-    console.log(task);
-  }
-
-  function editTask() {
-    const modifiedTask = {
-      title,
-      description,
-      label,
-      dueDate,
-    };
-
-    if (!validateTask(modifiedTask)) {
-      showToast(`Task validation failed`, "error");
-      throw new Error(`Task validation failed`);
-    }
-
-    function mapToModifiedTask(task) {
-      if (task.id === oldTask.id) {
-        (task.title = modifiedTask.title),
-          (task.description = modifiedTask.description),
-          (task.label = modifiedTask.label),
-          (task.dueDate = modifiedTask.dueDate);
-      }
-      return task;
-    }
-    setTasks(tasks.map(mapToModifiedTask));
-    showToast("task updated");
-  }
+  const { labels, setTasks } = useContext(LocalStorageContext);
+  const [taskInput, setTaskInput] = useState({
+    title: isEdit ? oldTask.title : "",
+    description: isEdit ? oldTask.description : "no description found",
+    label: isEdit ? oldTask.label : defaultLabel,
+    dueDate: isEdit ? oldTask.dueDate : "",
+    tags: isEdit ? oldTask.tags : [],
+  });
 
   function handleSubmit(e) {
     e.preventDefault();
-    isEdit ? editTask() : createTask();
+    isEdit
+      ? editTask(setTasks, showToast, taskInput, oldTask)
+      : createTask(setTasks, showToast, taskInput);
   }
 
   return (
@@ -126,27 +47,61 @@ export default function TaskForm({
 
         <div className="flex flex-col gap-2">
           <TitleInput
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            maxLength={LIMIT.title}
+            value={taskInput.title}
+            onChange={(e) => {
+              setTaskInput((prev) => {
+                return { ...prev, title: e.target.value };
+              });
+            }}
+            maxLength={LIMIT.TASK_TITLE}
           />
-          <span className="text-sm opacity-45">{`${title.length}/${LIMIT.title}`}</span>
+          <span className="text-sm opacity-45">{`${taskInput.title.length}/${LIMIT.TASK_TITLE}`}</span>
           <DateInput
-            value={dueDate}
-            onChange={(e) => setDueDate(e.target.value)}
+            value={taskInput.dueDate}
+            onChange={(e) => {
+              setTaskInput((prev) => {
+                return {
+                  ...prev,
+                  dueDate: new Date(e.target.value).toISOString() || "",
+                };
+              });
+            }}
           />
           <LabelSelect
-            onChange={(e) => setLabel(e.target.value)}
-            value={label}
+            onChange={(e) => {
+              setTaskInput((prev) => {
+                return { ...prev, label: e.target.value };
+              });
+            }}
+            value={taskInput.label}
             labels={labels}
             defaultValue={defaultLabel}
           />
-          <DescriptionInput
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            maxLength={LIMIT.description}
+          <TagInput
+            selectedTags={taskInput.tags}
+            onChange={(e, tag) => {
+              e.target.checked
+                ? setTaskInput((prev) => {
+                    return { ...prev, tags: [...prev.tags, tag] };
+                  })
+                : setTaskInput((prev) => {
+                    return {
+                      ...prev,
+                      tags: [...prev.tags.filter((t) => t.title != tag.title)],
+                    };
+                  });
+            }}
           />
-          <span className="text-sm opacity-45">{`${description.length}/${LIMIT.description}`}</span>
+          <DescriptionInput
+            value={taskInput.description}
+            onChange={(e) => {
+              setTaskInput((prev) => {
+                return { ...prev, description: e.target.value };
+              });
+            }}
+            maxLength={LIMIT.TASK_DESCRIPTION}
+          />
+          <span className="text-sm opacity-45">{`${taskInput.description.length}/${LIMIT.TASK_DESCRIPTION}`}</span>
         </div>
 
         <div className="flex justify-end space-x-3 pt-4">

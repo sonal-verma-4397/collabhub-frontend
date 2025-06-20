@@ -1,33 +1,4 @@
-export const PRIORITIES = {
-  low: "Low",
-  medium: "Medium",
-  high: "High",
-};
-
-export const LABELS = {
-  todo: {
-    title: "Todo",
-    color: "red",
-  },
-  in_progress: {
-    title: "In Progress",
-    color: "yellow",
-  },
-  completed: {
-    title: "Completed",
-    color: "green",
-  },
-  backlog: {
-    title: "Backlog",
-    color: "gray",
-  },
-  on_hold: {
-    title: "On Hold",
-    color: "purple",
-  },
-};
-
-export const NEW_LABELS = [
+export const DEFAULT_LABELS = [
   {
     id: 1,
     title: "Todo",
@@ -60,6 +31,24 @@ export const NEW_LABELS = [
   },
 ];
 
+export const DEFAULT_TAGS = [
+  {
+    title: "bug",
+    description: "there is bug in code",
+    color: "red",
+  },
+  {
+    title: "feature",
+    description: "new feature required",
+    color: "purple",
+  },
+  {
+    title: "research",
+    description: "research purpose",
+    color: "yellow",
+  },
+];
+
 export const LABELS_COLOR = {
   red: "border-red-500 bg-red-100 text-red-500",
   yellow: "border-yellow-500 bg-yellow-100 text-yellow-500",
@@ -83,8 +72,8 @@ export const COLOR_TO_HEX = {
 };
 
 export const LIMIT = {
-  title: 100,
-  description: 200,
+  TASK_TITLE: 100,
+  TASK_DESCRIPTION: 200,
 
   LABLE_TITLE: 20,
   LABLE_DESCRIPTION: 50,
