@@ -80,7 +80,7 @@ export default function Task({ handleDragStart, ...task }) {
       {showTaskForm && (
         <TaskForm
           isEdit={true}
-          oldTask={{ id, title, description, label, dueDate }}
+          oldTask={{ ...task }}
           closeForm={() => setShowTaskForm(false)}
         />
       )}

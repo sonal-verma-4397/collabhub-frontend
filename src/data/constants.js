@@ -33,16 +33,19 @@ export const DEFAULT_LABELS = [
 
 export const DEFAULT_TAGS = [
   {
+    id: "tag-bug",
     title: "bug",
     description: "there is bug in code",
     color: "red",
   },
   {
+    id: "tag-feature",
     title: "feature",
     description: "new feature required",
     color: "purple",
   },
   {
+    id: "tag-research",
     title: "research",
     description: "research purpose",
     color: "yellow",

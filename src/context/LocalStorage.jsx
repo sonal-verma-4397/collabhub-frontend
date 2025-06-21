@@ -11,8 +11,10 @@ function initializeStorage() {
 export const LocalStorageContext = createContext({
   tasks: [],
   labels: [],
+  tags: [],
   setTasks: () => {},
   setLabels: () => {},
+  setTags: () => {},
 });
 
 export function LocalStorageProvider({ children }) {
@@ -40,7 +42,7 @@ export function LocalStorageProvider({ children }) {
     localStorage.setItem("tasks", JSON.stringify(tasks));
     localStorage.setItem("labels", JSON.stringify(labels));
     localStorage.setItem("tags", JSON.stringify(tags));
-  }, [tasks, labels]);
+  }, [tasks, labels, tags]);
 
   return (
     <LocalStorageContext.Provider

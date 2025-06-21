@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import { DateInput, TagInput, TitleInput } from "../ui/Input";
+import React, { useContext, useState } from "react";
+import { DateInput, TitleInput } from "../ui/Input";
 import { DescriptionInput } from "../ui/TextArea";
 import { LabelSelect } from "../ui/Select";
 import { AddBtn, CloseBtn } from "../ui/Button";
@@ -7,6 +7,8 @@ import { LIMIT } from "../../data/constants";
 import LocalStorageContext from "../../context/LocalStorage";
 import { toasterContext } from "../../context/Toaster";
 import { createTask, editTask } from "../../utils/Task";
+import TagForm from "./Tag";
+import { Calendar, Tag, TimerIcon } from "lucide-react";
 
 export default function TaskForm({
   closeForm,
@@ -15,7 +17,7 @@ export default function TaskForm({
   oldTask,
 }) {
   const { showToast } = useContext(toasterContext);
-  const { labels, setTasks } = useContext(LocalStorageContext);
+  const { labels, tags, setTasks } = useContext(LocalStorageContext);
   const [taskInput, setTaskInput] = useState({
     title: isEdit ? oldTask.title : "",
     description: isEdit ? oldTask.description : "no description found",
@@ -23,6 +25,8 @@ export default function TaskForm({
     dueDate: isEdit ? oldTask.dueDate : "",
     tags: isEdit ? oldTask.tags : [],
   });
+
+  const [showTagForm, setShowTagForm] = useState(false);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -77,21 +81,26 @@ export default function TaskForm({
             labels={labels}
             defaultValue={defaultLabel}
           />
-          <TagInput
-            selectedTags={taskInput.tags}
-            onChange={(e, tag) => {
-              e.target.checked
-                ? setTaskInput((prev) => {
-                    return { ...prev, tags: [...prev.tags, tag] };
-                  })
-                : setTaskInput((prev) => {
-                    return {
-                      ...prev,
-                      tags: [...prev.tags.filter((t) => t.title != tag.title)],
-                    };
-                  });
-            }}
-          />
+          {showTagForm && (
+            <TagForm
+              allTags={tags}
+              selectedTags={taskInput.tags}
+              onChange={(e, tag) => {
+                e.target.checked
+                  ? setTaskInput((prev) => {
+                      return { ...prev, tags: [...prev.tags, tag] };
+                    })
+                  : setTaskInput((prev) => {
+                      return {
+                        ...prev,
+                        tags: [
+                          ...prev.tags.filter((t) => t.title != tag.title),
+                        ],
+                      };
+                    });
+              }}
+            />
+          )}
           <DescriptionInput
             value={taskInput.description}
             onChange={(e) => {
@@ -102,6 +111,30 @@ export default function TaskForm({
             maxLength={LIMIT.TASK_DESCRIPTION}
           />
           <span className="text-sm opacity-45">{`${taskInput.description.length}/${LIMIT.TASK_DESCRIPTION}`}</span>
+        </div>
+
+        <div className="flex gap-2">
+          <button
+            onClick={() => setShowTagForm(true)}
+            className="flex items-center justify-center gap-1 px-2 py-1 text-sm border border-dashed border-gray-500 rounded-md text-white dark:bg-[#0f0f0f] hover:border-white hover:bg-gray-900 transition-colors duration-200"
+          >
+            <Tag size={14} strokeWidth={2} />
+            <span className="text-xs">Tags</span>
+          </button>
+          <button
+            onClick={() => setShowTagForm(true)}
+            className="flex items-center justify-center gap-1 px-2 py-1 text-sm border border-dashed border-gray-500 rounded-md text-white dark:bg-[#0f0f0f] hover:border-white hover:bg-gray-900 transition-colors duration-200"
+          >
+            <Calendar size={14} strokeWidth={2} />
+            <span className="text-xs">Date</span>
+          </button>
+          <button
+            onClick={() => setShowTagForm(true)}
+            className="flex items-center justify-center gap-1 px-2 py-1 text-sm border border-dashed border-gray-500 rounded-md text-white dark:bg-[#0f0f0f] hover:border-white hover:bg-gray-900 transition-colors duration-200"
+          >
+            <TimerIcon size={14} strokeWidth={2} />
+            <span className="text-xs">Status</span>
+          </button>
         </div>
 
         <div className="flex justify-end space-x-3 pt-4">

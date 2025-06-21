@@ -27,13 +27,7 @@ export function editTask(setTasks, showToast, modifiedTask, oldTask) {
   }
 
   function mapToModifiedTask(task) {
-    if (task.id === oldTask.id) {
-      (task.title = modifiedTask.title),
-        (task.description = modifiedTask.description),
-        (task.label = modifiedTask.label),
-        (task.dueDate = modifiedTask.dueDate);
-    }
-    return task;
+    return task.id === oldTask.id ? { ...task, ...modifiedTask } : task;
   }
   setTasks((prev) => prev.map(mapToModifiedTask));
   showToast("task updated");
