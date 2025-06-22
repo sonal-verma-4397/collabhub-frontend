@@ -9,16 +9,16 @@ import {
 } from "recharts";
 import { getColor } from "../utility/util";
 
-export default function MyPieChart({ tasks, labels }) {
-  function mapToNameValueColor(label) {
-    const filterByLabel = (task) => task.label === label.title;
+export default function MyPieChart({ tasks, statuses }) {
+  function mapToNameValueColor(status) {
+    const filterByStatus = (task) => task.status === status.title;
     return {
-      name: label.title,
-      value: tasks.filter(filterByLabel).length,
-      color: getColor(label),
+      name: status.title,
+      value: tasks.filter(filterByStatus).length,
+      color: getColor(status),
     };
   }
-  const pieData = labels.map(mapToNameValueColor);
+  const pieData = statuses.map(mapToNameValueColor);
 
   function mapToCell(entry, index) {
     return <Cell key={`cell-${index}`} fill={entry.color} />;

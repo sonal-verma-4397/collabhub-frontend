@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { DateInput, TitleInput } from "../ui/Input";
 import { DescriptionInput } from "../ui/TextArea";
-import { LabelSelect } from "../ui/Select";
+import { StatusSelect } from "../ui/Select";
 import { AddBtn, CloseBtn } from "../ui/Button";
 import { LIMIT } from "../../data/constants";
 import LocalStorageContext from "../../context/LocalStorage";
@@ -12,16 +12,16 @@ import { Calendar, Tag, TimerIcon } from "lucide-react";
 
 export default function TaskForm({
   closeForm,
-  defaultLabel,
+  defaultStatus,
   isEdit = false,
   oldTask,
 }) {
   const { showToast } = useContext(toasterContext);
-  const { labels, tags, setTasks } = useContext(LocalStorageContext);
+  const { statuses, tags, setTasks } = useContext(LocalStorageContext);
   const [taskInput, setTaskInput] = useState({
     title: isEdit ? oldTask.title : "",
     description: isEdit ? oldTask.description : "no description found",
-    label: isEdit ? oldTask.label : defaultLabel,
+    status: isEdit ? oldTask.status : defaultStatus,
     dueDate: isEdit ? oldTask.dueDate : "",
     tags: isEdit ? oldTask.tags : [],
   });
@@ -71,15 +71,15 @@ export default function TaskForm({
               });
             }}
           />
-          <LabelSelect
+          <StatusSelect
             onChange={(e) => {
               setTaskInput((prev) => {
-                return { ...prev, label: e.target.value };
+                return { ...prev, status: e.target.value };
               });
             }}
-            value={taskInput.label}
-            labels={labels}
-            defaultValue={defaultLabel}
+            value={taskInput.status}
+            statuses={statuses}
+            defaultValue={defaultStatus}
           />
           {showTagForm && (
             <TagForm

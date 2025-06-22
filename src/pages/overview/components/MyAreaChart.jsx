@@ -19,20 +19,20 @@ function getDDMMTT(time) {
   });
 }
 
-export default function MyAreaChart({ tasks, labels }) {
+export default function MyAreaChart({ tasks, statuses }) {
   function groupTaskByTime(acc, task) {
     const time = getDDMMTT(task.createdAt);
 
     if (!acc[time]) {
       acc[time] = { time };
-      labels.forEach((label) => (acc[time][label.title] = 0));
+      statuses.forEach((label) => (acc[time][label.title] = 0));
     }
 
-    const findByLabel = (label) => label.title === task.label;
-    const matchedLabel = labels.find(findByLabel);
+    const findByStatus = (label) => label.title === task.label;
+    const matchedStatus = statuses.find(findByStatus);
 
-    if (matchedLabel) {
-      acc[time][matchedLabel.title] += 1;
+    if (matchedStatus) {
+      acc[time][matchedStatus.title] += 1;
     }
 
     return acc;
@@ -41,30 +41,30 @@ export default function MyAreaChart({ tasks, labels }) {
 
   const trendData = Object.values(trendByLabel);
 
-  function mapToLinerGradient(label) {
+  function mapToLinerGradient(status) {
     return (
       <linearGradient
-        key={label.id}
-        id={`color-${label.id}`}
+        key={status.id}
+        id={`color-${status.id}`}
         x1="0"
         y1="0"
         x2="0"
         y2="1"
       >
-        <stop offset="5%" stopColor={getColor(label)} stopOpacity={0.8} />
-        <stop offset="95%" stopColor={getColor(label)} stopOpacity={0} />
+        <stop offset="5%" stopColor={getColor(status)} stopOpacity={0.8} />
+        <stop offset="95%" stopColor={getColor(status)} stopOpacity={0} />
       </linearGradient>
     );
   }
 
-  function mapToArea(label) {
+  function mapToArea(status) {
     return (
       <Area
-        key={label.id}
+        key={status.id}
         type="monotone"
-        dataKey={label.title}
-        stroke={getColor(label)}
-        fill={`url(#color-${label.id})`}
+        dataKey={status.title}
+        stroke={getColor(status)}
+        fill={`url(#color-${status.id})`}
         stackId="1"
       />
     );
@@ -80,11 +80,11 @@ export default function MyAreaChart({ tasks, labels }) {
           data={trendData}
           margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
         >
-          <defs>{labels.map(mapToLinerGradient)}</defs>
+          <defs>{statuses.map(mapToLinerGradient)}</defs>
           <XAxis dataKey="time" stroke="#888" />
           <YAxis stroke="#888" />
           <Tooltip />
-          {labels.map(mapToArea)}
+          {statuses.map(mapToArea)}
         </AreaChart>
       </ResponsiveContainer>
     </section>

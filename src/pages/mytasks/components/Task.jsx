@@ -24,7 +24,7 @@ function getOverDue(dueDate) {
 }
 
 export default function Task({ handleDragStart, ...task }) {
-  const { id, title, description, label, dueDate } = task;
+  const { id, title, description, status, dueDate } = task;
   const { setTasks } = useContext(LocalStorageContext);
   const { showToast } = useContext(toasterContext);
   const { setTaskPreview } = useContext(TaskPreviewContext);

@@ -1,3 +1,3 @@
 import { COLOR_TO_HEX } from "../../../data/constants";
 
-export const getColor = (label) => COLOR_TO_HEX[label.color] || "#6b7280";
+export const getColor = (status) => COLOR_TO_HEX[status.color] || "#6b7280";

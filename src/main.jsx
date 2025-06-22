@@ -5,6 +5,7 @@ import App from "./App.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Error from "./components/utility/Error.jsx";
 import Overview from "./pages/overview/Page.jsx";
+import Tasks from "./pages/mytasks/Page.jsx";
 import Completed from "./pages/Completed.jsx";
 import Setting from "./pages/Setting.jsx";
 import { LocalStorageProvider } from "./context/LocalStorage.jsx";
@@ -27,14 +28,7 @@ const router = createBrowserRouter(
         },
         {
           path: "tasks",
-          lazy: async function lazyLoadMyTasks() {
-            const [{ default: Component }, { default: loader }] =
-              await Promise.all([
-                import("./pages/mytasks/Page.jsx"),
-                import("./loader/MyTasksLoader.jsx"),
-              ]);
-            return { Component, loader };
-          },
+          element: <Tasks />,
         },
         {
           path: "completed",

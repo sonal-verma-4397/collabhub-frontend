@@ -1,4 +1,4 @@
-export const DEFAULT_LABELS = [
+export const DEFAULT_STATUSES = [
   {
     id: 1,
     title: "Todo",
@@ -31,7 +31,7 @@ export const DEFAULT_LABELS = [
   },
 ];
 
-export const DEFAULT_TAGS = [
+export const DEFAULT_LABELS = [
   {
     id: "tag-bug",
     title: "bug",
@@ -52,7 +52,7 @@ export const DEFAULT_TAGS = [
   },
 ];
 
-export const LABELS_COLOR = {
+export const STATUS_COLOR = {
   red: "border-red-500 bg-red-100 text-red-500",
   yellow: "border-yellow-500 bg-yellow-100 text-yellow-500",
   green: "border-green-500 bg-green-100 text-green-500",
@@ -78,8 +78,15 @@ export const LIMIT = {
   TASK_TITLE: 100,
   TASK_DESCRIPTION: 200,
 
-  LABLE_TITLE: 20,
-  LABLE_DESCRIPTION: 50,
+  STATUS_TITLE: 20,
+  STATUS_DESCRIPTION: 50,
+};
+
+export const LOCAL_STORAGE_ITEMS = {
+  LABELS: "labels",
+  STATUSES: "statuses",
+  TASKS: "tasks",
+  INIT: "init",
 };
 
 export const APP_NAME = "Project Sync";
