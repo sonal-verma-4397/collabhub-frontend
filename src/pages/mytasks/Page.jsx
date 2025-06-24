@@ -1,27 +1,24 @@
 import React, { useContext, useEffect, useState } from "react";
-import TaskList from "./components/TaskList";
-import LabelForm from "../../components/form/LabelForm";
-import LocalStorageContext from "../../context/LocalStorage";
-import { filterTasksByLabel } from "../../utils/filters";
-import { AddNewLabelBtn } from "../../components/ui/Button";
-import useDragDrop from "./hooks/useDragDrop";
 import Search from "./components/Search";
-import {
-  TaskPreviewContext,
-  TaskPreviewProvider,
-} from "../../context/TaskPreview";
+import TaskList from "./components/TaskList";
+import TaskListForm from "../../components/form/TaskList";
 import TaskPrivew from "./components/TaskPrivew";
+import useDragDrop from "./hooks/useDragDrop";
+import LocalStorageContext from "../../context/LocalStorage";
+import { AddNewTaskListBtn } from "../../components/ui/Button";
+import { TaskPreviewContext } from "../../context/TaskPreview";
+import { filterTasksByStatus } from "../../utils/filters";
 
 export default function Page() {
-  const { labels, tasks } = useContext(LocalStorageContext);
+  const { statuses, tasks } = useContext(LocalStorageContext);
   const { taskPreview } = useContext(TaskPreviewContext);
   const { handleDrop } = useDragDrop();
   const [query, setQuery] = useState("");
-  const [showLabelForm, setShowLabelForm] = useState(false);
+  const [showTaskListForm, setShowTaskListForm] = useState(false);
   const [queryFilter, setQueryFilter] = useState("TITLE_FILTER");
 
-  function mapToTaskList(label) {
-    const tasksByLabel = filterTasksByLabel(tasks, label.title);
+  function mapToTaskList(status) {
+    const tasksByStatus = filterTasksByStatus(tasks, status.title);
     const filterByTitleQuery = (task) =>
       task.title.toLowerCase().startsWith(query.trim().toLowerCase());
     const filterByDescriptionQuery = (task) =>
@@ -34,9 +31,9 @@ export default function Page() {
 
     return (
       <TaskList
-        key={label.id}
-        label={label}
-        tasks={tasksByLabel.filter(FILTER[queryFilter])}
+        key={status.id}
+        status={status}
+        tasks={tasksByStatus.filter(FILTER[queryFilter])}
         handleDrop={handleDrop}
       />
     );
@@ -45,6 +42,7 @@ export default function Page() {
   useEffect(() => {
     console.log(query);
   }, [query]);
+
   return (
     <div>
       <section className="m-1 flex gap-2">
@@ -56,9 +54,9 @@ export default function Page() {
         />
       </section>
       <section className="flex gap-2 w-[1456px] overflow-auto ">
-        {labels.map(mapToTaskList)}
-        <AddNewLabelBtn openLabelForm={setShowLabelForm} />
-        {showLabelForm && <LabelForm closeForm={setShowLabelForm} />}
+        {statuses.map(mapToTaskList)}
+        <AddNewTaskListBtn openForm={setShowTaskListForm} />
+        {showTaskListForm && <TaskListForm closeForm={setShowTaskListForm} />}
       </section>
 
       {taskPreview && <TaskPrivew />}

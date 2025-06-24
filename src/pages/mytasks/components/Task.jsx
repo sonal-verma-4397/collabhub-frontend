@@ -23,8 +23,10 @@ function getOverDue(dueDate) {
   return daysOverdue > 0 ? daysOverdue : null;
 }
 
-export default function Task({ handleDragStart, ...task }) {
-  const { id, title, description, label, dueDate } = task;
+export default function Task({ handleDragStart, task }) {
+  // console.log(task);
+
+  const { id, title, description, dueDate } = task;
   const { setTasks } = useContext(LocalStorageContext);
   const { showToast } = useContext(toasterContext);
   const { setTaskPreview } = useContext(TaskPreviewContext);
@@ -80,7 +82,7 @@ export default function Task({ handleDragStart, ...task }) {
       {showTaskForm && (
         <TaskForm
           isEdit={true}
-          oldTask={{ id, title, description, label, dueDate }}
+          oldTask={{ ...task }}
           closeForm={() => setShowTaskForm(false)}
         />
       )}

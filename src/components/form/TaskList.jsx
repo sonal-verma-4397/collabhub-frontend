@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { LABELS_COLOR, LIMIT } from "../../data/constants";
+import { STATUS_COLOR, LIMIT } from "../../data/constants";
 import LocalStorageContext from "../../context/LocalStorage";
 import { toasterContext } from "../../context/Toaster";
 import { LabelInput } from "../ui/Input";
@@ -15,14 +15,14 @@ function capitalizeEachWord(str) {
     .join(" ");
 }
 
-export default function LabelForm({ oldLabel, isEdit = false, closeForm }) {
-  const [title, setTitle] = useState(isEdit ? oldLabel?.title : "");
+export default function TaskList({ oldStatus, isEdit = false, closeForm }) {
+  const [title, setTitle] = useState(isEdit ? oldStatus?.title : "");
   const [description, setDescription] = useState(
-    isEdit ? oldLabel?.description : ""
+    isEdit ? oldStatus?.description : ""
   );
-  const [color, setColor] = useState(isEdit ? oldLabel?.color : "red");
+  const [color, setColor] = useState(isEdit ? oldStatus?.color : "red");
 
-  const { setLabels, labels } = useContext(LocalStorageContext);
+  const { setStatuses, statuses } = useContext(LocalStorageContext);
   const { showToast } = useContext(toasterContext);
 
   function createLabel() {
@@ -31,30 +31,28 @@ export default function LabelForm({ oldLabel, isEdit = false, closeForm }) {
       throw new Error("At least 3 charater are required");
     }
 
-    const newLabel = {
+    const newStatus = {
       id: Date.now(),
       title: capitalizeEachWord(title),
       description,
       color,
     };
-    setLabels((prev) => [...prev, newLabel]);
+    setStatuses((prev) => [...prev, newStatus]);
   }
 
-  function updateLabel() {
-    function mapToUpdatedLabel(label) {
-      if (label.id === oldLabel.id) {
-        label.title = title;
-        label.description = description;
-        label.color = color;
-      }
-      return label;
-    }
-    setLabels(labels.map(mapToUpdatedLabel));
+  function updateStatus() {
+    setStatuses(
+      statuses.map((label) =>
+        label.id === oldStatus.id
+          ? { ...label, title, description, color }
+          : label
+      )
+    );
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-    isEdit ? updateLabel() : createLabel();
+    isEdit ? updateStatus() : createLabel();
   }
 
   const handleFormClose = () => closeForm(false);
@@ -69,26 +67,26 @@ export default function LabelForm({ oldLabel, isEdit = false, closeForm }) {
         onClick={(e) => e.stopPropagation()}
         className="dark:bg-[#262c36] w-fit flex flex-col p-4 rounded-lg gap-2"
       >
-        <h2>{capitalizeEachWord(title) || "New Label"}</h2>
+        <h2>{capitalizeEachWord(title) || "New Status"}</h2>
         <LabelInput
           onChange={(e) => setTitle(e.target.value)}
           value={title}
-          maxLength={LIMIT.LABLE_TITLE}
+          maxLength={LIMIT.STATUS_TITLE}
           minLength={3}
         />
-        <span className="text-xs font-thin">{`${title.length}/${LIMIT.LABLE_TITLE}`}</span>
+        <span className="text-xs font-thin">{`${title.length}/${LIMIT.STATUS_TITLE}`}</span>
 
         <ColorSelect
-          colors={Object.keys(LABELS_COLOR)}
+          colors={Object.keys(STATUS_COLOR)}
           onChange={(e) => setColor(e.target.value)}
           defaultValue={color}
         />
         <DescriptionInput
-          maxLength={LIMIT.LABLE_DESCRIPTION}
+          maxLength={LIMIT.STATUS_DESCRIPTION}
           onChange={(e) => setDescription(e.target.value)}
           value={description}
         />
-        <span className="text-xs font-thin">{`${description.length}/${LIMIT.LABLE_DESCRIPTION}`}</span>
+        <span className="text-xs font-thin">{`${description.length}/${LIMIT.STATUS_DESCRIPTION}`}</span>
 
         <div className="flex gap-2 justify-end">
           <AddBtn label={"Save"} />

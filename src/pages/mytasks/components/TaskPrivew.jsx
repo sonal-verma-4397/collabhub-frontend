@@ -4,7 +4,8 @@ import { X } from "lucide-react";
 
 export default function TaskPreview() {
   const { taskPreview, setTaskPreview } = useContext(TaskPreviewContext);
-  const { title, description, label, createdAt, updatedAt } = taskPreview || {};
+  const { title, description, status, labels, createdAt, updatedAt } =
+    taskPreview || {};
 
   return (
     <div className="fixed top-0 right-0 z-50 w-[50vw] h-screen bg-white dark:bg-zinc-900 text-black dark:text-white shadow-2xl border-l border-gray-300 dark:border-zinc-700">
@@ -30,11 +31,23 @@ export default function TaskPreview() {
           </p>
         </div>
 
-        <div>
-          <h3 className="text-sm font-medium text-gray-500 uppercase">Label</h3>
+        <div className="flex gap-2 items-center">
+          <h3 className="text-sm font-medium text-gray-500 uppercase">
+            Status
+          </h3>
           <span className="inline-block px-2 py-1 rounded bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-100 text-sm">
-            {label || "No label"}
+            {status || "No status"}
           </span>
+        </div>
+        <div className="flex gap-2 items-center">
+          <h3 className="text-sm font-medium text-gray-500 uppercase">Tags</h3>
+          {labels.length > 0
+            ? labels.map((label) => (
+                <div className="inline-block px-2 py-1 rounded bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-100 text-sm">
+                  {label.title}
+                </div>
+              ))
+            : "No label"}
         </div>
 
         <div className="text-sm text-gray-500 dark:text-gray-400 mt-8 border-t pt-4 border-gray-300 dark:border-zinc-700">

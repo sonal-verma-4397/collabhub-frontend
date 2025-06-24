@@ -1,4 +1,4 @@
-export function filterTasksByLabel(tasks, label) {
-  const filterByLabel = (task) => task.label === label;
-  return tasks.filter(filterByLabel);
+export function filterTasksByStatus(tasks, status) {
+  const filterByStatus = (task) => task.status === status;
+  return tasks.filter(filterByStatus);
 }

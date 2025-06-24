@@ -35,8 +35,9 @@ export function CloseBtn({ label, ...props }) {
     </button>
   );
 }
-export function AddNewLabelBtn({ openLabelForm }) {
-  const handleClick = () => openLabelForm(true);
+
+export function AddNewTaskListBtn({ openForm }) {
+  const handleClick = () => openForm(true);
   return (
     <button
       onClick={handleClick}

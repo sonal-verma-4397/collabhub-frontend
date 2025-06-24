@@ -1,4 +1,4 @@
-export const DEFAULT_LABELS = [
+export const DEFAULT_STATUSES = [
   {
     id: 1,
     title: "Todo",
@@ -30,26 +30,64 @@ export const DEFAULT_LABELS = [
     description: "Work on hold",
   },
 ];
-
-export const DEFAULT_TAGS = [
+export const DEFAULT_LABELS = [
   {
+    id: "label-bug",
     title: "bug",
-    description: "there is bug in code",
-    color: "red",
+    description: "Something isn't working",
+    color: "#d73a4a", // red
   },
   {
-    title: "feature",
-    description: "new feature required",
-    color: "purple",
+    id: "label-documentation",
+    title: "documentation",
+    description: "Improvements or additions to documentation",
+    color: "#0075ca", // blue
   },
   {
-    title: "research",
-    description: "research purpose",
-    color: "yellow",
+    id: "label-duplicate",
+    title: "duplicate",
+    description: "This issue or pull request already exists",
+    color: "#cfd3d7", // grey
+  },
+  {
+    id: "label-enhancement",
+    title: "enhancement",
+    description: "New feature or request",
+    color: "#a2eeef", // light blue
+  },
+  {
+    id: "label-good-first-issue",
+    title: "good first issue",
+    description: "Good for newcomers",
+    color: "#7057ff", // purple
+  },
+  {
+    id: "label-help-wanted",
+    title: "help wanted",
+    description: "Extra attention is needed",
+    color: "#008672", // green
+  },
+  {
+    id: "label-invalid",
+    title: "invalid",
+    description: "This doesn't seem right",
+    color: "#e4e669", // yellow
+  },
+  {
+    id: "label-question",
+    title: "question",
+    description: "Further information is requested",
+    color: "#d876e3", // pink
+  },
+  {
+    id: "label-wontfix",
+    title: "wontfix",
+    description: "This will not be worked on",
+    color: "#ffffff", // white
   },
 ];
 
-export const LABELS_COLOR = {
+export const STATUS_COLOR = {
   red: "border-red-500 bg-red-100 text-red-500",
   yellow: "border-yellow-500 bg-yellow-100 text-yellow-500",
   green: "border-green-500 bg-green-100 text-green-500",
@@ -75,8 +113,15 @@ export const LIMIT = {
   TASK_TITLE: 100,
   TASK_DESCRIPTION: 200,
 
-  LABLE_TITLE: 20,
-  LABLE_DESCRIPTION: 50,
+  STATUS_TITLE: 20,
+  STATUS_DESCRIPTION: 50,
+};
+
+export const LOCAL_STORAGE_ITEMS = {
+  LABELS: "labels",
+  STATUSES: "statuses",
+  TASKS: "tasks",
+  INIT: "init",
 };
 
 export const APP_NAME = "Project Sync";
