@@ -5,13 +5,13 @@ import LabelSummery from "./components/LabelSummery";
 import MyPieChart from "./components/MyPieChart";
 
 export default function Page() {
-  const { tasks, labels } = useContext(LocalStorageContext);
+  const { tasks, statuses } = useContext(LocalStorageContext);
 
   return (
     <div className="h-full flex flex-col gap-6 ">
-      <MyAreaChart tasks={tasks} labels={labels} />
-      <LabelSummery tasks={tasks} labels={labels} />
-      <MyPieChart tasks={tasks} labels={labels} />
+      <MyAreaChart tasks={tasks} statuses={statuses} />
+      <LabelSummery tasks={tasks} statuses={statuses} />
+      <MyPieChart tasks={tasks} statuses={statuses} />
     </div>
   );
 }

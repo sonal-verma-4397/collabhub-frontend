@@ -4,14 +4,8 @@ import LocalStorageContext from "../../../context/LocalStorage";
 import { toasterContext } from "../../../context/Toaster";
 import TaskForm from "../../../components/form/TaskForm";
 import { Clock } from "lucide-react";
-
-function dueDateFormater(dueDate) {
-  return new Date(dueDate).toLocaleDateString("en-GB", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  });
-}
+import { dueDateFormater } from "../../../utils/formaters";
+import { TaskPreviewContext } from "../../../context/TaskPreview";
 
 function getOverDue(dueDate) {
   if (!dueDate) return null;
@@ -29,19 +23,15 @@ function getOverDue(dueDate) {
   return daysOverdue > 0 ? daysOverdue : null;
 }
 
-export default function Task({
-  id,
-  title,
-  description,
-  label,
-  dueDate,
-  handleDragStart,
-}) {
+export default function Task({ handleDragStart, task }) {
+  const { id, title, description, dueDate } = task;
   const { setTasks } = useContext(LocalStorageContext);
   const { showToast } = useContext(toasterContext);
+  const { setTaskPreview } = useContext(TaskPreviewContext);
+
   const [showTaskForm, setShowTaskForm] = useState(false);
 
-  const handleDeleteTask = (id) => {
+  const deleteTask = (id) => {
     const filterByCurrentTaskId = (task) => task.id !== id;
     setTasks((prev) => prev.filter(filterByCurrentTaskId));
     showToast("Task deleted successfully", "success");
@@ -58,7 +48,12 @@ export default function Task({
         className="group relative justify-between items-center flex cursor-grab select-none m-2 bg-white dark:bg-[#0F0F0F] rounded-md p-4 shadow-md hover:shadow-xl transition-shadow duration-300 border dark:border-[#2B2B2B]"
       >
         <div>
-          <h2 className="text-xl  text-gray-800 dark:text-white">{title}</h2>
+          <button
+            onClick={() => setTaskPreview({ ...task })}
+            className="text-xl hover:underline cursor-pointer text-gray-800 dark:text-white"
+          >
+            {title}
+          </button>
           <p className="text-sm text-gray-600 font-thin dark:text-gray-300 mt-1">
             {description}
           </p>
@@ -66,9 +61,8 @@ export default function Task({
         <span className="absolute top-0 right-0">
           <Menu
             data-id={id}
-            onDelete={() => handleDeleteTask(id)}
+            onDelete={() => deleteTask(id)}
             onEdit={() => setShowTaskForm(true)}
-            positionClass="top-6 right-0"
           />
         </span>
         <div className="flex flex-col">
@@ -82,10 +76,11 @@ export default function Task({
           </span>
         </div>
       </div>
+      {/* Popup Components */}
       {showTaskForm && (
         <TaskForm
           isEdit={true}
-          oldTask={{ id, title, description, label, dueDate }}
+          oldTask={{ ...task }}
           closeForm={() => setShowTaskForm(false)}
         />
       )}

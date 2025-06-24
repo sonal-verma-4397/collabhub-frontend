@@ -24,10 +24,10 @@ A planned progression of ProjectSync to transform it into a complete software pr
 
 ## 🌍 Version 1.2.0 - Filtering and Tags
 
-- [ ] View Task in pop with all details of task.
-- [ ] Add tags/labels to tasks (e.g., bug, feature, research)
-- [ ] Filter tasks by tag or status
-- [ ] Search tasks by title
+- [x] View Task in pop with all details of task.
+- [x] Search tasks by title/description (Start with)
+- [x] Add status/labels to tasks (e.g., bug, feature, research)
+- [x] Filter tasks by title or description
 
 ---
 

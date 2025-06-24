@@ -5,16 +5,18 @@ import App from "./App.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Error from "./components/utility/Error.jsx";
 import Overview from "./pages/overview/Page.jsx";
+import Tasks from "./pages/mytasks/Page.jsx";
 import Completed from "./pages/Completed.jsx";
 import Setting from "./pages/Setting.jsx";
 import { LocalStorageProvider } from "./context/LocalStorage.jsx";
 import { ToasterProvider } from "./context/Toaster.jsx";
+import { TaskPreviewProvider } from "./context/TaskPreview.jsx";
 
 const router = createBrowserRouter(
   [
     {
       path: "/",
-      element: <App   />,
+      element: <App />,
       children: [
         {
           index: true,
@@ -26,14 +28,7 @@ const router = createBrowserRouter(
         },
         {
           path: "tasks",
-          lazy: async function lazyLoadMyTasks() {
-            const [{ default: Component }, { default: loader }] =
-              await Promise.all([
-                import("./pages/mytasks/Page.jsx"),
-                import("./loader/MyTasksLoader.jsx"),
-              ]);
-            return { Component, loader };
-          },
+          element: <Tasks />,
         },
         {
           path: "completed",
@@ -58,13 +53,15 @@ const router = createBrowserRouter(
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <LocalStorageProvider>
-      <ToasterProvider>
-        <Suspense
-          fallback={<div className="text-center mt-10">Loading app...</div>}
-        >
-          <RouterProvider router={router} />
-        </Suspense>
-      </ToasterProvider>
+      <TaskPreviewProvider>
+        <ToasterProvider>
+          <Suspense
+            fallback={<div className="text-center mt-10">Loading app...</div>}
+          >
+            <RouterProvider router={router} />
+          </Suspense>
+        </ToasterProvider>
+      </TaskPreviewProvider>
     </LocalStorageProvider>
   </StrictMode>
 );

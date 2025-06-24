@@ -1,113 +1,61 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useState } from "react";
 import { DateInput, TitleInput } from "../ui/Input";
 import { DescriptionInput } from "../ui/TextArea";
-import { LabelSelect } from "../ui/Select";
+import { StatusSelect } from "../ui/Select";
 import { AddBtn, CloseBtn } from "../ui/Button";
 import { LIMIT } from "../../data/constants";
 import LocalStorageContext from "../../context/LocalStorage";
 import { toasterContext } from "../../context/Toaster";
-
-function isValidDueDate(dueDate) {
-  if (!dueDate) return true;
-
-  const today = new Date();
-  today.setHours(0, 0, 0, 0); // Set to start of the day
-
-  const inputDate = new Date(dueDate);
-  inputDate.setHours(0, 0, 0, 0); // Ignore time, compare only date
-
-  return inputDate >= today;
-}
+import { createTask, editTask } from "../../utils/Task";
+import { Calendar, Tag, TimerIcon } from "lucide-react";
+import LabelFrom from "./Label";
 
 export default function TaskForm({
   closeForm,
-  defaultLabel,
+  defaultStatus,
   isEdit = false,
   oldTask,
 }) {
   const { showToast } = useContext(toasterContext);
-  const { labels, tasks, setTasks } = useContext(LocalStorageContext);
+  const { statuses, labels, setTasks } = useContext(LocalStorageContext);
+  const [taskInput, setTaskInput] = useState({
+    title: isEdit ? oldTask.title : "",
+    description: isEdit ? oldTask.description : "",
+    status: isEdit ? oldTask.status : defaultStatus,
+    dueDate: isEdit ? oldTask.dueDate : "",
+    labels: isEdit ? oldTask.labels : [],
+  });
 
-  const [title, setTitle] = useState(isEdit ? oldTask.title : "");
-  const [dueDate, setDueDate] = useState(isEdit ? oldTask.dueDate : "");
-  const [description, setDescription] = useState(
-    isEdit ? oldTask.description : ""
-  );
-  const [label, setLabel] = useState(isEdit ? oldTask.label : defaultLabel);
-
-  function validateTask(task) {
-    switch (true) {
-      case task.title.length === 0:
-        showToast("Title is required", "error");
-        return false;
-
-      case task.title.length > LIMIT.title:
-        showToast("Title must be less than 100 characters", "error");
-        return false;
-
-      case task.description.length > LIMIT.description:
-        showToast("Description must be less than 200 characters", "error");
-        return false;
-
-      case !isValidDueDate(task.dueDate):
-        showToast("Select a valid date", "error");
-        return false;
-
-      default:
-        return true;
-    }
-  }
-
-  function createTask() {
-    const createdAt = new Date().toISOString();
-    const updatedAt = createdAt;
-
-    const task = {
-      id: `task-${new Date().getTime()}`,
-      title,
-      description: description || "no description found",
-      label,
-      dueDate: dueDate ? new Date(dueDate).toISOString() : dueDate, // ⬅️ formatted
-      createdAt,
-      updatedAt,
-    };
-
-    if (!validateTask(task)) throw new Error("validation fail");
-
-    setTasks((prevTasks) => [...prevTasks, task]);
-    showToast(`${title} added successfully`);
-    console.log(task);
-  }
-
-  function editTask() {
-    const modifiedTask = {
-      title,
-      description,
-      label,
-      dueDate,
-    };
-
-    if (!validateTask(modifiedTask)) {
-      showToast(`Task validation failed`, "error");
-      throw new Error(`Task validation failed`);
-    }
-
-    function mapToModifiedTask(task) {
-      if (task.id === oldTask.id) {
-        (task.title = modifiedTask.title),
-          (task.description = modifiedTask.description),
-          (task.label = modifiedTask.label),
-          (task.dueDate = modifiedTask.dueDate);
-      }
-      return task;
-    }
-    setTasks(tasks.map(mapToModifiedTask));
-    showToast("task updated");
-  }
+  const [showLabelFrom, setShowLabelFrom] = useState(false);
 
   function handleSubmit(e) {
     e.preventDefault();
-    isEdit ? editTask() : createTask();
+    isEdit
+      ? editTask(setTasks, showToast, taskInput, oldTask)
+      : createTask(setTasks, showToast, taskInput);
+  }
+
+  function handleLabelChange() {
+    return (e, label) => {
+      e.target.checked
+        ? setTaskInput((prev) => {
+            return { ...prev, labels: [...prev.labels, label] };
+          })
+        : setTaskInput((prev) => {
+            return {
+              ...prev,
+              labels: [...prev.labels.filter((t) => t.title != label.title)],
+            };
+          });
+    };
+  }
+
+  function handleDescriptionChange() {
+    return (e) => {
+      setTaskInput((prev) => {
+        return { ...prev, description: e.target.value };
+      });
+    };
   }
 
   return (
@@ -126,27 +74,74 @@ export default function TaskForm({
 
         <div className="flex flex-col gap-2">
           <TitleInput
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            maxLength={LIMIT.title}
+            value={taskInput.title}
+            onChange={(e) => {
+              setTaskInput((prev) => {
+                return { ...prev, title: e.target.value };
+              });
+            }}
+            maxLength={LIMIT.TASK_TITLE}
           />
-          <span className="text-sm opacity-45">{`${title.length}/${LIMIT.title}`}</span>
-          <DateInput
-            value={dueDate}
-            onChange={(e) => setDueDate(e.target.value)}
+          <span className="text-sm opacity-45">{`${taskInput.title.length}/${LIMIT.TASK_TITLE}`}</span>
+
+          <StatusSelect
+            onChange={(e) => {
+              setTaskInput((prev) => {
+                return { ...prev, status: e.target.value };
+              });
+            }}
+            value={taskInput.status}
+            statuses={statuses}
+            defaultValue={defaultStatus}
           />
-          <LabelSelect
-            onChange={(e) => setLabel(e.target.value)}
-            value={label}
-            labels={labels}
-            defaultValue={defaultLabel}
-          />
+          {showLabelFrom && (
+            <LabelFrom
+              allLabels={labels}
+              selectedLabels={taskInput.labels}
+              onChange={handleLabelChange()}
+              closeForm={setShowLabelFrom}
+            />
+          )}
           <DescriptionInput
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            maxLength={LIMIT.description}
+            value={taskInput.description}
+            onChange={handleDescriptionChange()}
+            maxLength={LIMIT.TASK_DESCRIPTION}
           />
-          <span className="text-sm opacity-45">{`${description.length}/${LIMIT.description}`}</span>
+          <span className="text-sm opacity-45">{`${taskInput.description.length}/${LIMIT.TASK_DESCRIPTION}`}</span>
+        </div>
+
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={() => setShowLabelFrom(true)}
+            className="flex cursor-pointer items-center justify-center gap-1 px-2 py-1 text-sm border border-dashed border-gray-500 rounded-md text-white dark:bg-[#0f0f0f] hover:border-white hover:bg-gray-900 transition-colors duration-200"
+          >
+            <Tag size={14} strokeWidth={2} />
+            <span className="text-xs">Labels</span>
+          </button>
+          <DateInput
+            value={taskInput.dueDate?.slice(0, 10) || ""}
+            onClick={(e) => {
+              e.target.showPicker();
+            }}
+            onChange={(e) => {
+              setTaskInput((prev) => {
+                return {
+                  ...prev,
+                  dueDate: new Date(e.target.value).toISOString() || "",
+                };
+              });
+            }}
+          />
+
+          {/* <button
+            type="button"
+            onClick={() => setShowLabelFrom(true)}
+            className="flex cursor-pointer items-center justify-center gap-1 px-2 py-1 text-sm border border-dashed border-gray-500 rounded-md text-white dark:bg-[#0f0f0f] hover:border-white hover:bg-gray-900 transition-colors duration-200"
+          >
+            <TimerIcon size={14} strokeWidth={2} />
+            <span className="text-xs">Status</span>
+          </button> */}
         </div>
 
         <div className="flex justify-end space-x-3 pt-4">

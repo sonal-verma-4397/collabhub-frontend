@@ -1,58 +1,62 @@
-import React, { useContext, useState } from "react";
-import { LABELS } from "../../data/constants";
-import { Plus } from "lucide-react";
-import { toasterContext } from "../../context/Toaster";
+import React, { useContext, useEffect, useState } from "react";
+import Search from "./components/Search";
 import TaskList from "./components/TaskList";
-import LabelForm from "../../components/form/LabelForm";
+import TaskListForm from "../../components/form/TaskList";
+import TaskPrivew from "./components/TaskPrivew";
+import useDragDrop from "./hooks/useDragDrop";
 import LocalStorageContext from "../../context/LocalStorage";
+import { AddNewTaskListBtn } from "../../components/ui/Button";
+import { TaskPreviewContext } from "../../context/TaskPreview";
+import { filterTasksByStatus } from "../../utils/filters";
 
 export default function Page() {
-  const { showToast } = useContext(toasterContext);
-  const { labels, tasks, setTasks } = useContext(LocalStorageContext);
-  const [showLabelForm, setShowLabelForm] = useState(false);
+  const { statuses, tasks } = useContext(LocalStorageContext);
+  const { taskPreview } = useContext(TaskPreviewContext);
+  const { handleDrop } = useDragDrop();
+  const [query, setQuery] = useState("");
+  const [showTaskListForm, setShowTaskListForm] = useState(false);
+  const [queryFilter, setQueryFilter] = useState("TITLE_FILTER");
 
-  const handleDrop = (e) => {
-    const newLabel = e.currentTarget.dataset.label;
-    const draggedTaskId = e.dataTransfer.getData("text/plain");
+  function mapToTaskList(status) {
+    const tasksByStatus = filterTasksByStatus(tasks, status.title);
+    const filterByTitleQuery = (task) =>
+      task.title.toLowerCase().startsWith(query.trim().toLowerCase());
+    const filterByDescriptionQuery = (task) =>
+      task.description.toLowerCase().startsWith(query.trim().toLowerCase());
 
-    const mapToUpdatedLabel = (task) =>
-      task.id === draggedTaskId ? { ...task, label: newLabel } : task;
-    setTasks((prev) => prev.map(mapToUpdatedLabel));
+    const FILTER = {
+      TITLE_FILTER: filterByTitleQuery,
+      DESCRIPTION_FILTER: filterByDescriptionQuery,
+    };
 
-    const findByDraggedTaskId = (task) => task.id === draggedTaskId;
-    const task = tasks.find(findByDraggedTaskId);
-    showToast(`${task.title} moved to ${LABELS[newLabel].title}`, "success");
-  };
-
-  function handleDragOver(e) {
-    e.preventDefault();
-  }
-
-  const filterByLabel = (label) => tasks.filter((task) => task.label === label);
-
-  function renderTaskList(label) {
     return (
       <TaskList
-        key={label.id}
-        label={label}
-        tasks={filterByLabel(label.title)}
+        key={status.id}
+        status={status}
+        tasks={tasksByStatus.filter(FILTER[queryFilter])}
         handleDrop={handleDrop}
-        handleDragOver={handleDragOver}
       />
     );
   }
 
-  return (
-    <div className="flex gap-2 w-[1456px] overflow-auto ">
-      {labels.map(renderTaskList)}
-      <span
-        onClick={() => setShowLabelForm(true)}
-        className="dark:bg-[#262c36] h-fit p-2 rounded-lg cursor-pointer"
-      >
-        <Plus />
-      </span>
 
-      {showLabelForm && <LabelForm closeForm={() => setShowLabelForm(false)} />}
+  return (
+    <div>
+      <section className="m-1 flex gap-2">
+        <Search
+          query={query}
+          setQuery={setQuery}
+          queryFilter={queryFilter}
+          setQueryFilter={setQueryFilter}
+        />
+      </section>
+      <section className="flex gap-2 w-[1456px] overflow-auto ">
+        {statuses.map(mapToTaskList)}
+        <AddNewTaskListBtn openForm={setShowTaskListForm} />
+        {showTaskListForm && <TaskListForm closeForm={setShowTaskListForm} />}
+      </section>
+
+      {taskPreview && <TaskPrivew />}
     </div>
   );
 }
