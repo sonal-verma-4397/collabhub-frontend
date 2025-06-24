@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { STATUS_COLOR, LIMIT } from "../../data/constants";
 import LocalStorageContext from "../../context/LocalStorage";
 import { toasterContext } from "../../context/Toaster";
-import { LabelInput } from "../ui/Input";
+import { StatusInput } from "../ui/Input";
 import { DescriptionInput } from "../ui/TextArea";
 import { ColorSelect } from "../ui/Select";
 import { AddBtn, CloseBtn } from "../ui/Button";
@@ -68,7 +68,7 @@ export default function TaskList({ oldStatus, isEdit = false, closeForm }) {
         className="dark:bg-[#262c36] w-fit flex flex-col p-4 rounded-lg gap-2"
       >
         <h2>{capitalizeEachWord(title) || "New Status"}</h2>
-        <LabelInput
+        <StatusInput
           onChange={(e) => setTitle(e.target.value)}
           value={title}
           maxLength={LIMIT.STATUS_TITLE}

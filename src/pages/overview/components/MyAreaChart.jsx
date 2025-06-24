@@ -25,10 +25,10 @@ export default function MyAreaChart({ tasks, statuses }) {
 
     if (!acc[time]) {
       acc[time] = { time };
-      statuses.forEach((label) => (acc[time][label.title] = 0));
+      statuses.forEach((status) => (acc[time][status.title] = 0));
     }
 
-    const findByStatus = (label) => label.title === task.label;
+    const findByStatus = (status) => status.title === task.status;
     const matchedStatus = statuses.find(findByStatus);
 
     if (matchedStatus) {

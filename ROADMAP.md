@@ -26,8 +26,8 @@ A planned progression of ProjectSync to transform it into a complete software pr
 
 - [x] View Task in pop with all details of task.
 - [x] Search tasks by title/description (Start with)
-- [ ] Add tags/labels to tasks (e.g., bug, feature, research)
-- [ ] Filter tasks by tag or status
+- [x] Add status/labels to tasks (e.g., bug, feature, research)
+- [x] Filter tasks by title or description
 
 ---
 

@@ -20,7 +20,7 @@ export default function TaskForm({
   const { statuses, labels, setTasks } = useContext(LocalStorageContext);
   const [taskInput, setTaskInput] = useState({
     title: isEdit ? oldTask.title : "",
-    description: isEdit ? oldTask.description : "no description found",
+    description: isEdit ? oldTask.description : "",
     status: isEdit ? oldTask.status : defaultStatus,
     dueDate: isEdit ? oldTask.dueDate : "",
     labels: isEdit ? oldTask.labels : [],
@@ -83,17 +83,7 @@ export default function TaskForm({
             maxLength={LIMIT.TASK_TITLE}
           />
           <span className="text-sm opacity-45">{`${taskInput.title.length}/${LIMIT.TASK_TITLE}`}</span>
-          <DateInput
-            value={taskInput.dueDate}
-            onChange={(e) => {
-              setTaskInput((prev) => {
-                return {
-                  ...prev,
-                  dueDate: new Date(e.target.value).toISOString() || "",
-                };
-              });
-            }}
-          />
+
           <StatusSelect
             onChange={(e) => {
               setTaskInput((prev) => {
@@ -129,22 +119,29 @@ export default function TaskForm({
             <Tag size={14} strokeWidth={2} />
             <span className="text-xs">Labels</span>
           </button>
-          <button
-            type="button"
-            onClick={() => setShowLabelFrom(true)}
-            className="flex cursor-pointer items-center justify-center gap-1 px-2 py-1 text-sm border border-dashed border-gray-500 rounded-md text-white dark:bg-[#0f0f0f] hover:border-white hover:bg-gray-900 transition-colors duration-200"
-          >
-            <Calendar size={14} strokeWidth={2} />
-            <span className="text-xs">Date</span>
-          </button>
-          <button
+          <DateInput
+            value={taskInput.dueDate?.slice(0, 10) || ""}
+            onClick={(e) => {
+              e.target.showPicker();
+            }}
+            onChange={(e) => {
+              setTaskInput((prev) => {
+                return {
+                  ...prev,
+                  dueDate: new Date(e.target.value).toISOString() || "",
+                };
+              });
+            }}
+          />
+
+          {/* <button
             type="button"
             onClick={() => setShowLabelFrom(true)}
             className="flex cursor-pointer items-center justify-center gap-1 px-2 py-1 text-sm border border-dashed border-gray-500 rounded-md text-white dark:bg-[#0f0f0f] hover:border-white hover:bg-gray-900 transition-colors duration-200"
           >
             <TimerIcon size={14} strokeWidth={2} />
             <span className="text-xs">Status</span>
-          </button>
+          </button> */}
         </div>
 
         <div className="flex justify-end space-x-3 pt-4">

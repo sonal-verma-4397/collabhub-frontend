@@ -20,7 +20,6 @@ export default function Header({ color, title, id, openEditForm }) {
       <Menu
         onDelete={deleteList}
         onEdit={handleEditStatus}
-        positionClass="top-8 right-0"
       />
     </h2>
   );
