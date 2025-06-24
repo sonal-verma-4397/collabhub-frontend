@@ -21,7 +21,7 @@ export default function TaskList({ status, tasks, handleDrop }) {
         <Header openEditForm={setShowStatusForm} {...status} />
         <Tasks tasks={tasks} />
         <CreateTaskBtn
-          status={"+ Create Task"}
+          label={"+ Create Task"}
           openTaskForm={setShowTaskForm}
         />
       </section>

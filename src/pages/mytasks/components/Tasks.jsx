@@ -6,7 +6,7 @@ export default function Tasks({ tasks }) {
     e.dataTransfer.setData("text/plain", e.currentTarget.dataset.id);
 
   function mapToTask(task) {
-    return <Task key={task.id} {...task} handleDragStart={handleDragStart} />;
+    return <Task key={task.id} task={task} handleDragStart={handleDragStart} />;
   }
   return (
     <section className="h-[620px] overflow-y-auto">

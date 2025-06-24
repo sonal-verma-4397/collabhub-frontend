@@ -17,7 +17,7 @@ function initializeStorage() {
 export const LocalStorageContext = createContext({
   tasks: [],
   statuses: [],
-  tags: [],
+  labels: [],
   setTasks: () => {},
   setStatuses: () => {},
   setTags: () => {},
@@ -39,7 +39,7 @@ export function LocalStorageProvider({ children }) {
     return localData ? JSON.parse(localData) : [];
   });
 
-  const [tags, setTags] = useState(() => {
+  const [labels, setLabels] = useState(() => {
     const localData = localStorage.getItem(LABELS);
     return localData ? JSON.parse(localData) : [];
   });
@@ -47,12 +47,12 @@ export function LocalStorageProvider({ children }) {
   useEffect(() => {
     localStorage.setItem(TASKS, JSON.stringify(tasks));
     localStorage.setItem(STATUSES, JSON.stringify(statuses));
-    localStorage.setItem(LABELS, JSON.stringify(tags));
-  }, [tasks, statuses, tags]);
+    localStorage.setItem(LABELS, JSON.stringify(labels));
+  }, [tasks, statuses, labels]);
 
   return (
     <LocalStorageContext.Provider
-      value={{ tasks, statuses, tags, setTasks, setStatuses, setTags }}
+      value={{ tasks, statuses, labels, setTasks, setStatuses, setLabels }}
     >
       {children}
     </LocalStorageContext.Provider>
