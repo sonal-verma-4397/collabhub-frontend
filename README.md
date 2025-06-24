@@ -19,6 +19,17 @@
 
 
 ---
+### Version 1.2.0
+## Add label Inputs button
+![image](https://github.com/user-attachments/assets/9291551d-33d3-4fc8-b213-2c11c73c7827)
+
+## filter via titla and description
+![image](https://github.com/user-attachments/assets/e30b53b1-6b6b-4f85-8089-39d46234277c)
+
+## label input form
+![image](https://github.com/user-attachments/assets/8c3ff1c1-ecc2-4159-9bf7-f7295cd62414)
+
+---
 
 ## 🧠 Features
 
