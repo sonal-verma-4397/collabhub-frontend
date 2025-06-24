@@ -40,7 +40,7 @@ export default function TaskPreview() {
           </span>
         </div>
         <div className="flex gap-2 items-center">
-          <h3 className="text-sm font-medium text-gray-500 uppercase">Tags</h3>
+          <h3 className="text-sm font-medium text-gray-500 uppercase">Labels</h3>
           {labels.length > 0
             ? labels.map((label) => (
                 <div className="inline-block px-2 py-1 rounded bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-100 text-sm">

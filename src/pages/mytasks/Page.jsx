@@ -39,9 +39,6 @@ export default function Page() {
     );
   }
 
-  useEffect(() => {
-    console.log(query);
-  }, [query]);
 
   return (
     <div>
