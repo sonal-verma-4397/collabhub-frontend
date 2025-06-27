@@ -14,7 +14,7 @@ A planned progression of ProjectSync to transform it into a complete software pr
 
 ---
 
-## ✨ Version 1.1.0 - Task Enhancements
+## ✨ Version 1.1.0 - Task Enhancements (✅ Completed)
 
 - [x] Add due dates to tasks
 - [x] Edit task title and description
@@ -22,12 +22,19 @@ A planned progression of ProjectSync to transform it into a complete software pr
 
 ---
 
-## 🌍 Version 1.2.0 - Filtering and Tags
+## 🌍 Version 1.2.0 - Filtering and Tags (✅ Completed)
 
 - [x] View Task in pop with all details of task.
 - [x] Search tasks by title/description (Start with)
 - [x] Add status/labels to tasks (e.g., bug, feature, research)
 - [x] Filter tasks by title or description
+
+---
+
+## 📄 Version 1.3.0 - Project Board Features
+
+- [ ] Multiple project boards
+- [ ] Export/import tasks to JSON
 
 ---
 
@@ -45,14 +52,6 @@ A planned progression of ProjectSync to transform it into a complete software pr
 - [ ] Task completion stats
 - [ ] Weekly progress charts
 - [ ] Most active users and labels
-
----
-
-## 📄 Version 2.2.0 - Project Board Features
-
-- [ ] Multiple project boards
-- [ ] Export/import tasks to JSON
-- [ ] Board sharing via invite link
 
 ---
 
