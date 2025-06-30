@@ -11,6 +11,8 @@ import Setting from "./pages/Setting.jsx";
 import { LocalStorageProvider } from "./context/LocalStorage.jsx";
 import { ToasterProvider } from "./context/Toaster.jsx";
 import { TaskPreviewProvider } from "./context/TaskPreview.jsx";
+import Boards from "./pages/boards/Page.jsx";
+import Home from "./pages/home/index.jsx";
 
 const router = createBrowserRouter(
   [
@@ -20,7 +22,7 @@ const router = createBrowserRouter(
       children: [
         {
           index: true,
-          element: <Overview />,
+          element: <Home />,
         },
         {
           path: "overview",
