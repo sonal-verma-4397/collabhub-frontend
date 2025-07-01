@@ -4,7 +4,7 @@ import MyAreaChart from "./components/MyAreaChart";
 import LabelSummery from "./components/LabelSummery";
 import MyPieChart from "./components/MyPieChart";
 
-export default function Page() {
+export default function Analytics() {
   const { tasks, statuses } = useContext(LocalStorageContext);
 
   return (

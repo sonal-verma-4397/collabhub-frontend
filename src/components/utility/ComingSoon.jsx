@@ -2,7 +2,7 @@ import React from "react";
 
 export default function ComingSoon() {
   return (
-    <div className="flex items-center justify-center h-full bg-white dark:bg-[#131416] transition-colors duration-500">
+    <div className="flex items-center justify-center h-full bg-white dark:bg-[#131416] transition-colors duration-500 rounded-xl">
       <div className="text-center px-6">
         <h1 className="text-5xl md:text-6xl font-bold text-gray-800 dark:text-white mb-4">
           Coming Soon

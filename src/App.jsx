@@ -12,7 +12,7 @@ export default function App() {
     <div className="flex gap-1 w-screen h-screen overflow-hidden bg-[#f4fbf9] dark:bg-black  dark:text-white">
       <Toast />
       <Sidebar />
-      <main className="size-full flex flex-col  gap-2 flex-1 rounded-lg overflow-y-auto">
+      <main className="size-full flex flex-col gap-1   flex-1 rounded-lg overflow-y-auto">
         <Header setOpen={setShowSidebar} open={showSidebar} />
         <Outlet />
       </main>

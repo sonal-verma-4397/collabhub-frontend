@@ -8,7 +8,7 @@ export default function Header({ open, setOpen }) {
     setOpen(!open);
   }
   return (
-    <div className="h-fit sticky top-0 dark:bg-[#131416] flex items-center z-50 py-2 ">
+    <div className="h-fit sticky top-0 dark:bg-[#131416] flex items-center z-20 py-2 ">
       <button
         onClick={toggleSidebar}
         className="p-2 hover:bg-[#202124] rounded-md"

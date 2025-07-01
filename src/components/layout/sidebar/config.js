@@ -16,25 +16,25 @@ export const navConfig = [
   {
     id: 1,
     label: "Home",
-    path: "/",
+    path: "/workspaces/1",
     icon: LayoutDashboard,
   },
   {
     id: 2,
     label: "Settings",
-    path: "/settings",
+    path: "/workspaces/1/settings",
     icon: Settings,
   },
   {
     id: 3,
     label: "Analytics",
-    path: "/analytics",
+    path: "/workspaces/1/analytics",
     icon: BarChart3,
   },
   {
     id: 4,
     label: "Conversation",
-    path: "/chats",
+    path: "/workspaces/1/chats",
     icon: MessageSquare,
   },
   {
@@ -77,7 +77,7 @@ export const navConfig = [
               {
                 id: 11,
                 label: "Status",
-                path: "/tasks",
+                path: "modules/1/tasks",
                 icon: CheckCircle,
               },
               {

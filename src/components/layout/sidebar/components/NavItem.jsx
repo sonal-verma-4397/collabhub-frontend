@@ -5,21 +5,25 @@ import React, { useState } from "react";
 export default function NavItem({ item, depth }) {
   const [showChildren, setShowChildren] = useState(false);
   const hasChildren = item.children && item.children.length > 0;
-  const Component = item.path ? Link : "div";
+  const Component = item.path ? Link : "button";
 
   return (
     <div className="space-y-1" title={item.label} aria-label={item.label}>
-      <Component to={item.path} className={`flex items-center gap-2 py-1`}>
+      <Component
+        to={item.path}
+        onClick={() => setShowChildren(!showChildren)}
+        className={`flex items-center gap-2 p-1 hover:bg-[#28292c] rounded-md cursor-pointer w-full`}
+      >
         {item.icon && <item.icon size={18} />}
         <span>{item.label}</span>
         {!item.path && (
-          <button onClick={() => setShowChildren(!showChildren)}>
+          <span>
             {showChildren ? (
               <ChevronDown size={16} />
             ) : (
               <ChevronRight size={16} />
             )}
-          </button>
+          </span>
         )}
       </Component>
 
