@@ -5,11 +5,14 @@ import {
   LOCAL_STORAGE_ITEMS,
 } from "../data/constants";
 
-const { TASKS, STATUSES, LABELS, INIT, WORKSPACES } = LOCAL_STORAGE_ITEMS;
+const { TASKS, STATUSES, LABELS, INIT, WORKSPACES, MODULES, PAGES } =
+  LOCAL_STORAGE_ITEMS;
 
 function initializeStorage() {
+  localStorage.setItem(PAGES, JSON.stringify([]));
   localStorage.setItem(TASKS, JSON.stringify([]));
   localStorage.setItem(WORKSPACES, JSON.stringify([]));
+  localStorage.setItem(MODULES, JSON.stringify([]));
 
   localStorage.setItem(STATUSES, JSON.stringify(DEFAULT_STATUSES));
   localStorage.setItem(LABELS, JSON.stringify(DEFAULT_LABELS));
@@ -38,6 +41,8 @@ export const LocalStorageContext = createContext({
   setStatuses: () => {},
   setTags: () => {},
   setWorkspaces: () => {},
+  setModules: () => {},
+  setPages: () => {},
 });
 
 export function LocalStorageProvider({ children }) {
@@ -68,13 +73,25 @@ export function LocalStorageProvider({ children }) {
     return localData ? JSON.parse(localData) : [];
   });
 
+  const [modules, setModules] = useState(() => {
+    const localData = localStorage.getItem(MODULES);
+    return localData ? JSON.parse(localData) : [];
+  });
+
+  const [pages, setPages] = useState(() => {
+    const localData = localStorage.getItem(PAGES);
+    return localData ? JSON.parse(localData) : [];
+  });
+
   useEffect(() => {
+    localStorage.setItem(PAGES, JSON.stringify(pages));
     localStorage.setItem(TASKS, JSON.stringify(tasks));
+    localStorage.setItem(MODULES, JSON.stringify(modules));
     localStorage.setItem(WORKSPACES, JSON.stringify(workspaces));
 
     localStorage.setItem(STATUSES, JSON.stringify(statuses));
     localStorage.setItem(LABELS, JSON.stringify(labels));
-  }, [tasks, statuses, labels, workspaces]);
+  }, [tasks, statuses, labels, workspaces, modules, pages]);
 
   return (
     <LocalStorageContext.Provider
@@ -83,10 +100,15 @@ export function LocalStorageProvider({ children }) {
         statuses,
         labels,
         workspaces,
+        modules,
+        pages,
+
         setTasks,
         setStatuses,
         setLabels,
         setWorkspaces,
+        setModules,
+        setPages,
       }}
     >
       {children}

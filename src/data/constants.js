@@ -124,6 +124,8 @@ export const LOCAL_STORAGE_ITEMS = {
   TASKS: "tasks",
   INIT: "init",
   WORKSPACES: "workspaces",
+  MODULES: "modules",
+  PAGES: "pages",
 };
 
 export const APP_NAME = "Project Sync";

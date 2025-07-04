@@ -10,15 +10,15 @@ import { ToasterProvider } from "./context/Toaster.jsx";
 import About from "./pages/about/index.jsx";
 import Analytics from "./pages/analytics/index.jsx";
 import App from "./App.jsx";
-import Boards from "./pages/boards/Page.jsx";
 import Error from "./components/utility/Error.jsx";
 import Home from "./pages/home/index.jsx";
 import Overview from "./pages/overview/index.jsx";
 import PublicLayout from "./PublicLayout.jsx";
 import Setting from "./pages/Setting.jsx";
-import Tasks from "./pages/mytasks/Page.jsx";
+import StatusBoard from "./pages/mytasks/Page.jsx";
 import User from "./pages/user/index.jsx";
 import Conversation from "./pages/conversation/index.jsx";
+import Page from "./pages/page/Page.jsx";
 
 const router = createBrowserRouter(
   [
@@ -56,7 +56,11 @@ const router = createBrowserRouter(
         },
         {
           path: "modules/:moduleId/tasks",
-          element: <Tasks />,
+          element: <StatusBoard />,
+        },
+        {
+          path: "modules/:moduleId/pages/:pageId",
+          element: <Page />,
         },
         {
           path: "chats",

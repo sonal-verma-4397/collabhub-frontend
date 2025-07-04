@@ -7,6 +7,16 @@ export default function NavItem({ item, depth }) {
   const hasChildren = item.children && item.children.length > 0;
   const Component = item.path ? Link : "button";
 
+  function handleClick(e) {
+    e.stopPropagation();
+
+    if (e.target.id === "add-req") {
+      // setShowCreateModulePopup(true);
+    } else {
+      setShowChildren(!showChildren);
+    }
+  }
+
   return (
     <div className="space-y-1" title={item.label} aria-label={item.label}>
       <Component
