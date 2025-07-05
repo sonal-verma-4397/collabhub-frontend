@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router-dom";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronRight, Plus } from "lucide-react";
 import React, { useContext, useState } from "react";
 import { generateDynamicSidebarConfig } from "../config";
 
@@ -10,35 +10,43 @@ export default function NavItem({ item, depth }) {
   const Component = item.path ? Link : "button";
 
 
-
-  // console.log(dySidebarConfig[params.workspaceId]);  
-
-  // function handleClick(e) {
-  //   e.stopPropagation();
-
-  //   if (e.target.id === "add-req") {
-  //     // setShowCreateModulePopup(true);
-  //   } else {
-  //     setShowChildren(!showChildren);
-  //   }
-  // }
+  function handleClick(e) {
+    e.stopPropagation();
+    if (e.target.id === "add-module") {
+      alert("add module");
+      // setShowCreateModulePopup(true);
+    } else {
+      setShowChildren(!showChildren);
+    }
+  }
 
   return (
     <div className="space-y-1" title={item.label} aria-label={item.label}>
       <Component
         to={item.path}
-        onClick={() => setShowChildren(!showChildren)}
-        className={`flex items-center gap-2 p-1 hover:bg-[#28292c] rounded-md cursor-pointer w-full`}
+        onClick={handleClick}
+        className={`flex items-center gap-2 p-1 hover:bg-[#28292c] rounded-md cursor-pointer w-full justify-between`}
       >
-        {item.icon && <item.icon size={18} />}
-        <span>{item.label}</span>
-        {!item.path && (
-          <span>
-            {showChildren ? (
-              <ChevronDown size={16} />
-            ) : (
-              <ChevronRight size={16} />
-            )}
+        <span className="flex items-center gap-2">
+          {item.icon && <item.icon size={18} />}
+          <span>{item.label}</span>
+          {!item.path && (
+            <span>
+              {showChildren ? (
+                <ChevronDown size={16} />
+              ) : (
+                <ChevronRight size={16} />
+              )}
+            </span>
+          )}
+        </span>
+
+        {item.label === "Modules" && (
+          <span
+            id={item.label === "Modules" && "add-module"}
+            className="p-1 hover:bg-[#0f0f0f] rounded-md bg-[#202124]"
+          >
+            <Plus className="pointer-events-none" size={16} />
           </span>
         )}
       </Component>

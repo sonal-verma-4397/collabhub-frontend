@@ -16,6 +16,9 @@ export default function NavItems() {
 
   const navConfig = dySidebarConfig[params.workspaceId];
 
+  console.log(navConfig);
+  
+
   return (
     <div className="p-3 space-y-1 flex-1 overflow-y-auto">
       {navConfig.map((item) => (
