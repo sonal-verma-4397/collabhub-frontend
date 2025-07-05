@@ -1,21 +1,27 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { ChevronDown, ChevronRight } from "lucide-react";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { generateDynamicSidebarConfig } from "../config";
 
 export default function NavItem({ item, depth }) {
   const [showChildren, setShowChildren] = useState(false);
+
   const hasChildren = item.children && item.children.length > 0;
   const Component = item.path ? Link : "button";
 
-  function handleClick(e) {
-    e.stopPropagation();
 
-    if (e.target.id === "add-req") {
-      // setShowCreateModulePopup(true);
-    } else {
-      setShowChildren(!showChildren);
-    }
-  }
+
+  // console.log(dySidebarConfig[params.workspaceId]);  
+
+  // function handleClick(e) {
+  //   e.stopPropagation();
+
+  //   if (e.target.id === "add-req") {
+  //     // setShowCreateModulePopup(true);
+  //   } else {
+  //     setShowChildren(!showChildren);
+  //   }
+  // }
 
   return (
     <div className="space-y-1" title={item.label} aria-label={item.label}>

@@ -1,8 +1,21 @@
-import React from "react";
+import React, { useContext } from "react";
 import NavItem from "./NavItem";
-import { navConfig } from "../config";
+import { generateDynamicSidebarConfig } from "../config";
+import LocalStorageContext from "../../../../context/LocalStorage";
+import { useParams } from "react-router-dom";
 
 export default function NavItems() {
+  const params = useParams();
+
+  const { workspaces, modules, pages } = useContext(LocalStorageContext);
+  const dySidebarConfig = generateDynamicSidebarConfig({
+    workspaces,
+    modules,
+    pages,
+  });
+
+  const navConfig = dySidebarConfig[params.workspaceId];
+
   return (
     <div className="p-3 space-y-1 flex-1 overflow-y-auto">
       {navConfig.map((item) => (

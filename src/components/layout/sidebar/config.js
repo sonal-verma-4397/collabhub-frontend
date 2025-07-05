@@ -81,7 +81,7 @@ const workspaces = [
   },
 ];
 
-function generateDynamicSidebarConfig({
+export function generateDynamicSidebarConfig({
   modules = [],
   pages = [],
   workspaces = [],
@@ -174,14 +174,17 @@ function generateDynamicSidebarConfig({
     ];
   }
 
-  return workspaces.map(mapToWorkspaceConfig);
+  return workspaces.reduce((prev, curr) => {
+    prev[curr.id] = [curr].map(mapToWorkspaceConfig)[0];
+    return prev;
+  }, {});
 }
 
 export const navConfig = generateDynamicSidebarConfig({
   modules,
   pages,
   workspaces,
-})[1];
+})[111];
 
 // import {
 //   LayoutDashboard,
