@@ -1,6 +1,6 @@
 import { validateEntity } from "./validateEntity";
 
-function createEntity(schema) {
+export function createEntity(schema) {
   const entity = {};
   for (let key in schema) {
     const def = schema[key];

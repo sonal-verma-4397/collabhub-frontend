@@ -15,13 +15,13 @@ import {
 const modules = [
   {
     id: "123",
-    label: "Module - 1",
+    name: "Module - 1",
     pages: ["page-4", "page-2", "page-3"],
     tasks: ["task-1", "task-2", "task-3"],
   },
   {
     id: "124",
-    label: "Module - 2",
+    name: "Module - 2",
     pages: ["page-1", "page-5", "page-6"],
     tasks: ["task-1", "task-2", "task-3"],
   },
@@ -97,7 +97,7 @@ export function generateDynamicSidebarConfig({
   function mapToPageConfig(mod, ws) {
     return (page) => ({
       id: page.id,
-      label: page.name,
+      name: page.name,
       path: `/workspaces/${ws.id}/modules/${mod.id}/pages/${page.id}`,
       icon: FileText,
     });
@@ -106,28 +106,28 @@ export function generateDynamicSidebarConfig({
   function mapToModuleConfig(ws) {
     return (mod) => ({
       id: mod.id,
-      label: mod.label,
+      name: mod.name,
       children: [
         {
-          id: `${mod.id}-pages`,
-          label: "Pages",
+          id: `${mod.id}_pages`,
+          name: "Pages",
           children: pages
             .filter(filterPageByModuleId(mod))
             .map(mapToPageConfig(mod, ws)),
         },
         {
           id: `${mod.id}-tasks`,
-          label: "Tasks Board",
+          name: "Tasks Board",
           children: [
             {
               id: `${mod.id}-tasks-status`,
-              label: "Status",
+              name: "Status",
               path: `/workspaces/${ws.id}/modules/${mod.id}/tasks?view=status`,
               icon: Kanban,
             },
             {
               id: `${mod.id}-tasks-priority`,
-              label: "Priority",
+              name: "Priority",
               path: `/workspaces/${ws.id}/modules/${mod.id}/tasks?view=priority`,
               icon: Flag,
             },
@@ -141,31 +141,31 @@ export function generateDynamicSidebarConfig({
     return [
       {
         id: `ws-${ws.id}-home`,
-        label: "Home",
+        name: "Home",
         path: `/workspaces/${ws.id}`,
         icon: LayoutDashboard,
       },
       {
         id: `ws-${ws.id}-settings`,
-        label: "Settings",
+        name: "Settings",
         path: `/workspaces/${ws.id}/settings`,
         icon: Settings,
       },
       {
         id: `ws-${ws.id}-analytics`,
-        label: "Analytics",
+        name: "Analytics",
         path: `/workspaces/${ws.id}/analytics`,
         icon: BarChart3,
       },
       {
         id: `ws-${ws.id}-chats`,
-        label: "Conversation",
+        name: "Conversation",
         path: `/workspaces/${ws.id}/chats`,
         icon: MessageSquare,
       },
       {
         id: `ws-${ws.id}-modules`,
-        label: "Modules",
+        name: "Modules",
         icon: FolderKanban,
         children: modules
           .filter(filterModuleByWorkspaceId(ws))

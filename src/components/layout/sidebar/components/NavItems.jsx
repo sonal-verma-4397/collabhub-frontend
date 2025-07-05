@@ -17,12 +17,11 @@ export default function NavItems() {
   const navConfig = dySidebarConfig[params.workspaceId];
 
   console.log(navConfig);
-  
 
   return (
     <div className="p-3 space-y-1 flex-1 overflow-y-auto">
       {navConfig.map((item) => (
-        <NavItem key={item.id} item={item} depth={0} />
+        <NavItem key={item.id} id={item.id} item={item} depth={0} />
       ))}
     </div>
   );
