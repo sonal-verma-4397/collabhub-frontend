@@ -1,52 +1,11 @@
 import { useRef, useState } from "react";
+import useIndex from "./hooks/useIndex";
 
 export function CreateModulePopup({ onSubmit, onCancel }) {
-  const [formData, setFormData] = useState({
-    name: "",
-    description: "",
+  const { formData, handleChange, handleSubmit, modalRef } = useIndex({
+    onSubmit,
+    onCancel,
   });
-
-  const modalRef = useRef();
-
-  // Close when clicking outside the modal
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (modalRef.current && !modalRef.current.contains(e.target)) {
-        onCancel();
-      }
-    };
-    const handleEscape = (e) => {
-      if (e.key === "Escape") {
-        onCancel();
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("keydown", handleEscape);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("keydown", handleEscape);
-    };
-  }, [onCancel]);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((d) => ({ ...d, [name]: value }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!formData.name.trim()) return;
-
-    const newModule = {
-      id: crypto.randomUUID(),
-      name: formData.name.trim(),
-      description: formData.description.trim(),
-      pages: [],
-      tasks: [],
-    };
-
-    onSubmit(newModule);
-  };
 
   return (
     <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center">

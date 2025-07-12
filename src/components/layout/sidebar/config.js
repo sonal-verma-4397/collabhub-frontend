@@ -10,6 +10,7 @@ import {
   Kanban,
   CheckCircle,
   Flag,
+  Package,
 } from "lucide-react";
 
 const modules = [
@@ -100,6 +101,7 @@ export function generateDynamicSidebarConfig({
       name: page.name,
       path: `/workspaces/${ws.id}/modules/${mod.id}/pages/${page.id}`,
       icon: FileText,
+      ariaLabel: "page",
     });
   }
 
@@ -107,6 +109,8 @@ export function generateDynamicSidebarConfig({
     return (mod) => ({
       id: mod.id,
       name: mod.name,
+      icon: Package,
+      ariaLabel: "module",
       children: [
         {
           id: `${mod.id}_pages`,

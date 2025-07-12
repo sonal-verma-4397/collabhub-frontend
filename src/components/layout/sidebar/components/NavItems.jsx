@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import NavItem from "./NavItem";
+import NavItem from "./nav-item";
 import { generateDynamicSidebarConfig } from "../config";
 import LocalStorageContext from "../../../../context/LocalStorage";
 import { useParams } from "react-router-dom";
@@ -16,7 +16,7 @@ export default function NavItems() {
 
   const navConfig = dySidebarConfig[params.workspaceId];
 
-  console.log(navConfig);
+  // console.log(navConfig);
 
   return (
     <div className="p-3 space-y-1 flex-1 overflow-y-auto">
