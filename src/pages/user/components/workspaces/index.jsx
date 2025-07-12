@@ -6,7 +6,7 @@ import CreateWorkspaceForm from "../create-workspace";
 
 // -------------------- WORKSPACES SECTION ---------------------
 export default function Workspaces() {
-  const { workspaces, setWorkspaces, setModules, setPages, setTasks } =
+  const { workspaces, setWorkspaces, modules, setModules, setPages, setTasks } =
     useContext(LocalStorageContext);
   const [showForm, setShowForm] = useState(false);
 
@@ -16,17 +16,44 @@ export default function Workspaces() {
   };
 
   const handleDeleteWorkspace = (id) => () => {
-    const modulesToBeDelete = workspaces.find((ws) => ws.id === id).modulesIds;
-    setModules((prev) =>
-      prev.filter((mod) => !modulesToBeDelete.includes(mod.id))
+    // Get all module IDs inside the workspace
+    const modulesIdToBeDelete =
+      workspaces.find((ws) => ws.id === id)?.modulesIds || [];
+
+    // Get all modules that will be deleted
+    const modulesToBeDelete = modules.filter((module) =>
+      modulesIdToBeDelete.includes(module.id)
     );
+
+    // Collect all page IDs to be deleted
+    const pagesIdToBeDelete = modulesToBeDelete.flatMap((mod) => mod.pages);
+
+    // Collect all task IDs to be deleted
+    const tasksIdToBeDelete = modulesToBeDelete.flatMap((mod) => mod.tasks);
+
+    // Delete pages by their ID
     setPages((prev) =>
-      prev.filter((page) => !modulesToBeDelete.includes(page.moduleId))
+      prev.filter((page) => !pagesIdToBeDelete.includes(page.id))
     );
+
+    // Delete tasks by their ID
     setTasks((prev) =>
-      prev.filter((task) => !modulesToBeDelete.includes(task.pageId))
+      prev.filter((task) => !tasksIdToBeDelete.includes(task.id))
     );
+
+    // Delete modules by their ID
+    setModules((prev) =>
+      prev.filter((mod) => !modulesIdToBeDelete.includes(mod.id))
+    );
+
+    // Finally, delete the workspace
     setWorkspaces((prev) => prev.filter((ws) => ws.id !== id));
+  };
+
+  const handleEditWorkspace = (id) => () => {
+    console.log(id);
+    // const workspaceToBeEdited = workspaces.find((ws) => ws.id === id);
+    setShowForm(true);
   };
 
   return (
@@ -49,6 +76,7 @@ export default function Workspaces() {
               key={ws.id}
               ws={ws}
               handleDelete={handleDeleteWorkspace}
+              handleEdit={handleEditWorkspace}
             />
           ))}
 

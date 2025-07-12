@@ -6,6 +6,7 @@ import TaskForm from "../../../components/form/TaskForm";
 import { Clock } from "lucide-react";
 import { dueDateFormater } from "../../../utils/formaters";
 import { TaskPreviewContext } from "../../../context/TaskPreview";
+import { useParams } from "react-router-dom";
 
 function getOverDue(dueDate) {
   if (!dueDate) return null;
@@ -25,14 +26,25 @@ function getOverDue(dueDate) {
 
 export default function Task({ handleDragStart, task }) {
   const { id, title, description, dueDate } = task;
-  const { setTasks } = useContext(LocalStorageContext);
+  const { setTasks, setModules } = useContext(LocalStorageContext);
   const { showToast } = useContext(toasterContext);
   const { setTaskPreview } = useContext(TaskPreviewContext);
 
   const [showTaskForm, setShowTaskForm] = useState(false);
 
+  const params = useParams();
+
   const deleteTask = (id) => {
     const filterByCurrentTaskId = (task) => task.id !== id;
+    setModules((modules) =>
+      modules.map((module) => {
+        if (module.id !== params.moduleId) return module;
+        return {
+          ...module,
+          tasks: module.tasks.filter((taskId) => taskId !== id),
+        };
+      })
+    );
     setTasks((prev) => prev.filter(filterByCurrentTaskId));
     showToast("Task deleted successfully", "success");
   };

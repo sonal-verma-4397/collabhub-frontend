@@ -180,6 +180,12 @@ export default function useIndex(item) {
     };
   }
 
+  function handleRename() {
+    return () => {
+      setIsEditing(true);
+    };
+  }
+
   /* ----------------------------------
    * Return hook API
    * ---------------------------------- */
@@ -203,5 +209,6 @@ export default function useIndex(item) {
     handleRenameSubmit,
     handleKeyDown,
     handleDelete,
+    handleRename,
   };
 }

@@ -4,7 +4,7 @@ import Menu from "../../../../components/utility/Menu";
 import Text from "../../../../components/ui/Text";
 
 // -------------------- WORKSPACE CARD ---------------------
-export default function WorkspaceCard({ ws, handleDelete }) {
+export default function WorkspaceCard({ ws, handleDelete, handleEdit }) {
   const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef();
@@ -32,7 +32,7 @@ export default function WorkspaceCard({ ws, handleDelete }) {
         <Text className={["text-xl font-medium mb-1"]}>{ws.name}</Text>
         <div className="text-sm text-gray-400">{ws.description}</div>
       </div>
-      <Menu onDelete={handleDelete(ws.id)} />
+      <Menu onDelete={handleDelete(ws.id)} onEdit={handleEdit(ws.id)} />
     </div>
   );
 }

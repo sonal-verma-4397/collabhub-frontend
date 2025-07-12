@@ -5,7 +5,6 @@ export function createTask(setTasks, showToast, taskInput) {
   const updatedAt = createdAt;
 
   const newTask = {
-    id: `task-${new Date().getTime()}`,
     createdAt,
     updatedAt,
     ...taskInput,
@@ -13,7 +12,7 @@ export function createTask(setTasks, showToast, taskInput) {
 
   if (!validateTask(newTask, showToast)) throw new Error("validation fail");
 
-  setTasks((prevTasks) => [...prevTasks, newTask]);
+  setTasks((prevTasks) => [newTask, ...prevTasks]);
   showToast(`${taskInput.title} added successfully`);
   console.log(newTask);
 }

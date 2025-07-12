@@ -48,7 +48,8 @@ export default function Menu({ onDelete, onEdit, ...props }) {
           </button>
           <button
             className="text-indigo-500 rounded-md flex items-center gap-2 cursor-pointer px-3 py-2 hover:bg-gray-100 dark:hover:bg-[#2a2a2e]"
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               onEdit?.();
               setShowMenu(false);
             }}

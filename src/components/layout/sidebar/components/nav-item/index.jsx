@@ -32,6 +32,7 @@ export default function NavItem({ item, depth }) {
     handleRenameSubmit,
     handleKeyDown,
     handleDelete,
+    handleRename,
   } = useIndex(item);
 
   return (
@@ -95,6 +96,7 @@ export default function NavItem({ item, depth }) {
           position={contextMenuPosition}
           onClose={() => setShowMenu(false)}
           onDelete={handleDelete(item)}
+          onRename={handleRename()}
         />
       )}
     </div>

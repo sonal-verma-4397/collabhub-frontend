@@ -15,7 +15,7 @@ import Home from "./pages/home/index.jsx";
 import Overview from "./pages/overview/index.jsx";
 import PublicLayout from "./PublicLayout.jsx";
 import Setting from "./pages/Setting.jsx";
-import StatusBoard from "./pages/mytasks/Page.jsx";
+import StatusBoard from "./pages/tasks/Page.jsx";
 import User from "./pages/user/index.jsx";
 import Conversation from "./pages/conversation/index.jsx";
 import Page from "./pages/page/Page.jsx";
