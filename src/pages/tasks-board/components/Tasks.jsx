@@ -1,5 +1,5 @@
 import React from "react";
-import Task from "./Task";
+import Task from "./task-card";
 
 export default function Tasks({ tasks }) {
   const handleDragStart = (e) =>

@@ -8,7 +8,7 @@ export default function Text({
 }) {
   const Tag = html_tag;
   return (
-    <Tag {...props} className={cn(className)}>
+    <Tag {...props} className={cn(...className)}>
       {children}
     </Tag>
   );
