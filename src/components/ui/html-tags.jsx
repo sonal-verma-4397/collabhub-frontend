@@ -3,7 +3,7 @@ import cn from "../../utils/cn";
 
 /** @type {React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>>} */
 export const Button = ({ className = [], children, ...props }) => (
-  <button {...props} className={cn(...className, "cursor-pointer w-full")}>
+  <button {...props} className={cn("cursor-pointer w-full", ...className)}>
     {children}
   </button>
 );
@@ -39,7 +39,7 @@ export const Input = ({ className = [], children, ...props }) => (
     {...props}
     className={cn(
       ...className,
-      "w-full px-3 py-2 rounded-md bg-[#2a2a2a]",
+      "inline-block w-full px-3 py-2 rounded-md bg-[#2a2a2a]",
       "border border-gray-600",
       "outline-none"
     )}

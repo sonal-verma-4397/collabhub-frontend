@@ -1,3 +1,5 @@
+import { twMerge } from "tailwind-merge";
+
 export default function cn(...classes) {
-  return classes.filter(Boolean).join(" ");
+  return twMerge(classes.filter(Boolean).join(" "));
 }

@@ -9,6 +9,7 @@ import { AddNewTaskListBtn } from "../../components/ui/Button";
 import { TaskPreviewContext } from "../../context/TaskPreview";
 import { filterTasksByStatus } from "../../utils/filters";
 import { useParams } from "react-router-dom";
+import Text from "../../components/ui/Text";
 
 export default function Page() {
   const { statuses, tasks, modules } = useContext(LocalStorageContext);
@@ -18,6 +19,8 @@ export default function Page() {
   const [showTaskListForm, setShowTaskListForm] = useState(false);
   const [queryFilter, setQueryFilter] = useState("TITLE_FILTER");
   const params = useParams();
+
+  const moduleName = modules.find((mod) => mod.id === params.moduleId)?.name;
 
   function mapToTaskList(status) {
     const tasksByStatus = filterTasksByStatus(tasks, status.title);
@@ -46,6 +49,9 @@ export default function Page() {
 
   return (
     <div>
+      <Text html_tag="h3" className={["text-2xl p-2"]}>
+        {moduleName} / Task Board
+      </Text>
       <section className="m-1 flex gap-2">
         <Search
           query={query}
@@ -54,7 +60,7 @@ export default function Page() {
           setQueryFilter={setQueryFilter}
         />
       </section>
-      <section className="flex gap-2 w-[1456px] overflow-auto ">
+      <section className="space-x-4 whitespace-nowrap p-2">
         {statuses.map(mapToTaskList)}
         <AddNewTaskListBtn openForm={setShowTaskListForm} />
         {showTaskListForm && <TaskListForm closeForm={setShowTaskListForm} />}

@@ -4,6 +4,9 @@ import TaskForm from "../../../components/form/TaskForm";
 import TaskListForm from "../../../components/form/TaskList";
 import Header from "./Header";
 import Tasks from "./Tasks";
+import { Button } from "../../../components/ui/html-tags";
+import { Plus } from "lucide-react";
+import Text from "../../../components/ui/Text";
 
 export default function TaskList({ status, tasks, handleDrop }) {
   const [showTaskForm, setShowTaskForm] = useState(false);
@@ -16,14 +19,17 @@ export default function TaskList({ status, tasks, handleDrop }) {
         data-status={status.title}
         onDragOver={handleDragOver}
         onDrop={handleDrop}
-        className="bg-white dark:bg-[#121316] shrink-0  w-[330px] rounded-lg shadow-lg flex flex-col overflow-hidden"
+        className="bg-white dark:bg-[#121316] shrink-0  w-[330px] rounded-lg shadow-lg overflow-hidden inline-block align-top h-[700px]"
       >
         <Header openEditForm={setShowStatusForm} {...status} />
         <Tasks tasks={tasks} />
-        <CreateTaskBtn
-          label={"+ Create Task"}
-          openTaskForm={setShowTaskForm}
-        />
+        <Button
+          onClick={() => setShowTaskForm(true)}
+          className={["p-4 flex justify-center gap-2"]}
+        >
+          <Plus />
+          <Text>Create Task</Text>
+        </Button>
       </section>
 
       {/* Pop Up Components */}

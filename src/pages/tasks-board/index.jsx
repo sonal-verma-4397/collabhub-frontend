@@ -34,14 +34,15 @@ export default function TasksBoard() {
           name="search"
           placeholder="Search your tasks ..."
         />
-        <div className="overflow-x-scroll flex gap-4 px-4 py-2 items-start">
+        <div className="overflow-x-scroll px-4 py-2 items-start whitespace-nowrap space-x-4">
           <TaskListGroup taskLists={taskLists} />
           <Button
             className={[
               "dark:bg-[#131416]",
-              "p-2",
+              "inline-block p-2 w-fit",
               "rounded-md",
               "border border-gray-600",
+              "align-top",
             ]}
           >
             <Plus />
