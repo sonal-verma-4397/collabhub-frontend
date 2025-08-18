@@ -1,54 +1,72 @@
-import { useLocation, useParams, useSearchParams } from "react-router-dom";
-import { Button, Input, Section } from "../../components/ui/html-tags";
-import TaskListGroup from "./components/tasklist-group";
-import { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import Search from "./components/Search";
+import TaskList from "./components/TaskList";
+import TaskListForm from "../../components/form/TaskList";
+import TaskPrivew from "./components/TaskPrivew";
+import useDragDrop from "./hooks/useDragDrop";
 import LocalStorageContext from "../../context/LocalStorage";
+import { AddNewTaskListBtn } from "../../components/ui/Button";
+import { TaskPreviewContext } from "../../context/TaskPreview";
+import { filterTasksByStatus } from "../../utils/filters";
+import { useParams } from "react-router-dom";
 import Text from "../../components/ui/Text";
-import { Plus } from "lucide-react";
 
-export default function TasksBoard() {
-  const { tasks, statuses, modules } = useContext(LocalStorageContext);
-  const [searchParams] = useSearchParams();
-  const view = searchParams.get("view");
+export default function Page() {
+  const { statuses, tasks, modules } = useContext(LocalStorageContext);
+  const { taskPreview } = useContext(TaskPreviewContext);
+  const { handleDrop } = useDragDrop();
+  const [query, setQuery] = useState("");
+  const [showTaskListForm, setShowTaskListForm] = useState(false);
+  const [queryFilter, setQueryFilter] = useState("TITLE_FILTER");
   const params = useParams();
 
   const moduleName = modules.find((mod) => mod.id === params.moduleId)?.name;
 
-  const taskLists = statuses.map((status) => {
-    const tasksByStatus = tasks.filter((task) => task.status === status.title);
-    return {
-      status,
-      tasks: tasksByStatus,
+  function mapToTaskList(status) {
+    const tasksByStatus = filterTasksByStatus(tasks, status.title);
+    const filterByTitleQuery = (task) =>
+      task.title.toLowerCase().startsWith(query.trim().toLowerCase());
+    const filterByDescriptionQuery = (task) =>
+      task.description.toLowerCase().startsWith(query.trim().toLowerCase());
+    const moduleFilter = (task) => {
+      const module = modules.find((mod) => mod.id === params.moduleId);
+      return module.tasks.includes(task.id);
     };
-  });
+    const FILTER = {
+      TITLE_FILTER: filterByTitleQuery,
+      DESCRIPTION_FILTER: filterByDescriptionQuery,
+    };
 
-  // console.log(taskLists);
+    return (
+      <TaskList
+        key={status.id}
+        status={status}
+        tasks={tasksByStatus.filter(moduleFilter).filter(FILTER[queryFilter])}
+        handleDrop={handleDrop}
+      />
+    );
+  }
+
   return (
-    <div className="h-screen overflow-y-auto">
-      <Text html_tag="h2" className={["text-xl", "font-semibold", "mx-4 my-2"]}>
-        {moduleName}
+    <div>
+      <Text html_tag="h3" className={["text-2xl p-2"]}>
+        {moduleName} / Task Board
       </Text>
-      <div>
-        <Input
-          className={["my-2"]}
-          name="search"
-          placeholder="Search your tasks ..."
+      <section className="m-1 flex gap-2">
+        <Search
+          query={query}
+          setQuery={setQuery}
+          queryFilter={queryFilter}
+          setQueryFilter={setQueryFilter}
         />
-        <div className="overflow-x-scroll px-4 py-2 items-start whitespace-nowrap space-x-4">
-          <TaskListGroup taskLists={taskLists} />
-          <Button
-            className={[
-              "dark:bg-[#131416]",
-              "inline-block p-2 w-fit",
-              "rounded-md",
-              "border border-gray-600",
-              "align-top",
-            ]}
-          >
-            <Plus />
-          </Button>
-        </div>
-      </div>
+      </section>
+      <section className="space-x-4 whitespace-nowrap p-2">
+        {statuses.map(mapToTaskList)}
+        <AddNewTaskListBtn openForm={setShowTaskListForm} />
+        {showTaskListForm && <TaskListForm closeForm={setShowTaskListForm} />}
+      </section>
+
+      {taskPreview && <TaskPrivew />}
     </div>
   );
 }

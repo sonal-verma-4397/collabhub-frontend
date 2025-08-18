@@ -37,7 +37,7 @@ A planned progression of ProjectSync to transform it into a complete software pr
 - [ ] Export/import tasks to JSON
 
 ---
-
+# 
 ## 🧑‍💼 Version 2.0.0 - Collaboration + Auth
 
 - [ ] User authentication (signup/login)

@@ -15,72 +15,74 @@ import Home from "./pages/home/index.jsx";
 import Overview from "./pages/overview/index.jsx";
 import PublicLayout from "./PublicLayout.jsx";
 import Setting from "./pages/Setting.jsx";
-import TasksBoard from "./pages/tasks-board/Page.jsx";
+import TasksBoard from "./pages/tasks-board/index.jsx";
 import User from "./pages/user/index.jsx";
 import Conversation from "./pages/conversation/index.jsx";
-import Page from "./pages/page/Page.jsx";
+import Page from "./pages/document/Page.jsx";
+import { SocketProvider } from "./context/Socket.jsx";
+import { ConversationSocketProvider } from "./context/ConversationSocket.jsx";
 
-const router = createBrowserRouter(
-  [
-    {
-      path: "/",
-      element: <PublicLayout />,
-      children: [
-        {
-          index: true,
-          element: <Home />,
-        },
-        {
-          path: "about",
-          element: <About />,
-        },
-      ],
-      errorElement: <Error />,
-    },
-    {
-      path: "/user/:userId",
-      element: <User />,
-      errorElement: <Error />,
-    },
-    {
-      path: "/workspaces/:workspaceId",
-      element: <App />,
-      children: [
-        {
-          index: true,
-          element: <Overview />,
-        },
-        {
-          path: "analytics",
-          element: <Analytics />,
-        },
-        {
-          path: "modules/:moduleId/tasks",
-          element: <TasksBoard />,
-        },
-        {
-          path: "modules/:moduleId/pages/:pageId",
-          element: <Page />,
-        },
-        {
-          path: "chats",
-          element: <Conversation />,
-        },
-        {
-          path: "settings",
-          element: <Setting />,
-        },
-      ],
-      errorElement: <Error />,
-    },
-  ],
+const router = createBrowserRouter([
   {
-    // 👇 This is crucial for hydration support with lazy routes
-    hydrateFallbackElement: (
-      <div className="text-center mt-10 text-gray-500">Loading...</div>
+    path: "/",
+    element: <PublicLayout />,
+    children: [
+      {
+        index: true,
+        element: <Home />,
+      },
+      {
+        path: "about",
+        element: <About />,
+      },
+    ],
+    errorElement: <Error />,
+  },
+  {
+    path: "/user/:userId",
+    element: <User />,
+    errorElement: <Error />,
+  },
+  {
+    path: "/workspaces/:workspaceId",
+    element: (
+      <SocketProvider>
+        <App />
+      </SocketProvider>
     ),
-  }
-);
+    children: [
+      {
+        index: true,
+        element: <Overview />,
+      },
+      {
+        path: "analytics",
+        element: <Analytics />,
+      },
+      {
+        path: "modules/:moduleId/tasks",
+        element: <TasksBoard />,
+      },
+      {
+        path: "modules/:moduleId/pages/:pageId",
+        element: <Page />,
+      },
+      {
+        path: "chats",
+        element: (
+          <ConversationSocketProvider>
+            <Conversation />
+          </ConversationSocketProvider>
+        ),
+      },
+      {
+        path: "settings",
+        element: <Setting />,
+      },
+    ],
+    errorElement: <Error />,
+  },
+]);
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
