@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { use, useContext, useState } from "react";
 import { DateInput, TitleInput } from "../ui/Input";
 import { DescriptionInput } from "../ui/TextArea";
 import { StatusSelect } from "../ui/Select";
@@ -9,6 +9,9 @@ import { toasterContext } from "../../context/Toaster";
 import { createTask, editTask } from "../../utils/Task";
 import { Calendar, Tag, TimerIcon } from "lucide-react";
 import LabelFrom from "./Label";
+import { createAndValidate } from "../../entities/utils/createAndValidate";
+import { TaskSchema } from "../../entities/schema/task.schema";
+import { useParams } from "react-router-dom";
 
 export default function TaskForm({
   closeForm,
@@ -17,7 +20,8 @@ export default function TaskForm({
   oldTask,
 }) {
   const { showToast } = useContext(toasterContext);
-  const { statuses, labels, setTasks } = useContext(LocalStorageContext);
+  const { statuses, labels, setTasks, setModules } =
+    useContext(LocalStorageContext);
   const [taskInput, setTaskInput] = useState({
     title: isEdit ? oldTask.title : "",
     description: isEdit ? oldTask.description : "",
@@ -28,11 +32,34 @@ export default function TaskForm({
 
   const [showLabelFrom, setShowLabelFrom] = useState(false);
 
+  const params = useParams();
+
   function handleSubmit(e) {
     e.preventDefault();
     isEdit
       ? editTask(setTasks, showToast, taskInput, oldTask)
-      : createTask(setTasks, showToast, taskInput);
+      : createAndValidate(TaskSchema, (task) => {
+          task.title = taskInput.title;
+          task.description = taskInput.description;
+          task.status = taskInput.status;
+          task.dueDate = taskInput.dueDate;
+          task.labels = taskInput.labels;
+
+          if (params.moduleId) {
+            setModules((modules) => {
+              return modules.map((module) => {
+                if (module.id === params.moduleId) {
+                  return {
+                    ...module,
+                    tasks: [task.id, ...module.tasks],
+                  };
+                }
+                return module;
+              });
+            });
+          }
+          createTask(setTasks, showToast, task);
+        });
   }
 
   function handleLabelChange() {

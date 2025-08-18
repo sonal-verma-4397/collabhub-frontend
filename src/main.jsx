@@ -1,54 +1,88 @@
 import { StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";
-import "./index.css";
-import App from "./App.jsx";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Error from "./components/utility/Error.jsx";
-import Overview from "./pages/overview/Page.jsx";
-import Tasks from "./pages/mytasks/Page.jsx";
-import Completed from "./pages/Completed.jsx";
-import Setting from "./pages/Setting.jsx";
-import { LocalStorageProvider } from "./context/LocalStorage.jsx";
-import { ToasterProvider } from "./context/Toaster.jsx";
-import { TaskPreviewProvider } from "./context/TaskPreview.jsx";
 
-const router = createBrowserRouter(
-  [
-    {
-      path: "/",
-      element: <App />,
-      children: [
-        {
-          index: true,
-          element: <Overview />,
-        },
-        {
-          path: "overview",
-          element: <Overview />,
-        },
-        {
-          path: "tasks",
-          element: <Tasks />,
-        },
-        {
-          path: "completed",
-          element: <Completed />,
-        },
-        {
-          path: "settings",
-          element: <Setting />,
-        },
-      ],
-      errorElement: <Error />,
-    },
-  ],
+import "./index.css";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { LocalStorageProvider } from "./context/LocalStorage.jsx";
+import { TaskPreviewProvider } from "./context/TaskPreview.jsx";
+import { ToasterProvider } from "./context/Toaster.jsx";
+
+import About from "./pages/about/index.jsx";
+import Analytics from "./pages/analytics/index.jsx";
+import App from "./App.jsx";
+import Error from "./components/utility/Error.jsx";
+import Home from "./pages/home/index.jsx";
+import Overview from "./pages/overview/index.jsx";
+import PublicLayout from "./PublicLayout.jsx";
+import Setting from "./pages/Setting.jsx";
+import TasksBoard from "./pages/tasks-board/index.jsx";
+import User from "./pages/user/index.jsx";
+import Conversation from "./pages/conversation/index.jsx";
+import Page from "./pages/document/Page.jsx";
+import { SocketProvider } from "./context/Socket.jsx";
+import { ConversationSocketProvider } from "./context/ConversationSocket.jsx";
+
+const router = createBrowserRouter([
   {
-    // 👇 This is crucial for hydration support with lazy routes
-    hydrateFallbackElement: (
-      <div className="text-center mt-10 text-gray-500">Loading...</div>
+    path: "/",
+    element: <PublicLayout />,
+    children: [
+      {
+        index: true,
+        element: <Home />,
+      },
+      {
+        path: "about",
+        element: <About />,
+      },
+    ],
+    errorElement: <Error />,
+  },
+  {
+    path: "/user/:userId",
+    element: <User />,
+    errorElement: <Error />,
+  },
+  {
+    path: "/workspaces/:workspaceId",
+    element: (
+      <SocketProvider>
+        <App />
+      </SocketProvider>
     ),
-  }
-);
+    children: [
+      {
+        index: true,
+        element: <Overview />,
+      },
+      {
+        path: "analytics",
+        element: <Analytics />,
+      },
+      {
+        path: "modules/:moduleId/tasks",
+        element: <TasksBoard />,
+      },
+      {
+        path: "modules/:moduleId/pages/:pageId",
+        element: <Page />,
+      },
+      {
+        path: "chats",
+        element: (
+          <ConversationSocketProvider>
+            <Conversation />
+          </ConversationSocketProvider>
+        ),
+      },
+      {
+        path: "settings",
+        element: <Setting />,
+      },
+    ],
+    errorElement: <Error />,
+  },
+]);
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

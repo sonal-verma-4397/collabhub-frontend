@@ -1,3 +1,5 @@
+import { Input } from "../../../components/ui/html-tags";
+
 export default function Search({
   queryFilter,
   setQueryFilter,
@@ -5,7 +7,7 @@ export default function Search({
   setQuery,
 }) {
   return (
-    <section className="m-1 flex gap-2">
+    <>
       <select
         className="dark:bg-[#131416] rounded-lg"
         value={queryFilter}
@@ -18,13 +20,13 @@ export default function Search({
           Description
         </option>
       </select>
-      <input
-        className="p-1 rounded-lg px-2 dark:bg-[#131416]"
+      <Input
+        className={["p-1 rounded-lg px-2 dark:bg-[#131416]"]}
         type="text"
         onChange={(e) => setQuery(e.target.value)}
         value={query}
         placeholder="Search by title"
       />
-    </section>
+    </>
   );
 }

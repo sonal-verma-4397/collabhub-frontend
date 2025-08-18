@@ -30,6 +30,7 @@ export const DEFAULT_STATUSES = [
     description: "Work on hold",
   },
 ];
+
 export const DEFAULT_LABELS = [
   {
     id: "label-bug",
@@ -122,6 +123,49 @@ export const LOCAL_STORAGE_ITEMS = {
   STATUSES: "statuses",
   TASKS: "tasks",
   INIT: "init",
+  WORKSPACES: "workspaces",
+  MODULES: "modules",
+  PAGES: "pages",
 };
 
 export const APP_NAME = "Project Sync";
+
+export const DUMMY_WORKSPACE = {
+  id: "workspace-1",
+  name: "My Workspace",
+  description: "This is my workspace",
+  modulesIds: ["module-1", "module-2", "module-3"],
+};
+
+export const DUMMY_MODULE = {
+  id: "module-1",
+  name: "Module 1",
+  description: "This is module 1",
+  pages: ["page-1", "page-2", "page-3"],
+  tasks: ["task-1", "task-2", "task-3"],
+  team: "team-1",
+};
+
+export const DUMMY_PAGE = {
+  id: "page-1",
+  name: "Page 1",
+  description: "This is page 1",
+  content: [],
+};
+
+export const DUMMY_TASK = {
+  id: "task-1",
+  title: "Task 1",
+  description: "This is task 1",
+  status: "todo",
+  labels: ["label-1", "label-2"],
+  priority: "medium",
+  assignees: ["user-1", "user-2"],
+};
+
+export const DUMMY_TEAM = {
+  id: "team-1",
+  name: "Team 1",
+  description: "This is team 1",
+  members: ["user-1", "user-2", "user-3"],
+};

@@ -1,5 +1,5 @@
 import React from "react";
-import Task from "./Task";
+import Task from "./task-card";
 
 export default function Tasks({ tasks }) {
   const handleDragStart = (e) =>
@@ -9,7 +9,7 @@ export default function Tasks({ tasks }) {
     return <Task key={task.id} task={task} handleDragStart={handleDragStart} />;
   }
   return (
-    <section className="h-[620px] overflow-y-auto">
+    <section className="h-[610px] overflow-y-auto">
       {tasks.map(mapToTask)}
     </section>
   );

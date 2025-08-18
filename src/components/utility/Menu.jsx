@@ -23,7 +23,10 @@ export default function Menu({ onDelete, onEdit, ...props }) {
     >
       <span
         className="cursor-pointer "
-        onClick={() => setShowMenu((prev) => !prev)}
+        onClick={(e) => {
+          e.stopPropagation();
+          setShowMenu((prev) => !prev);
+        }}
       >
         <Ellipsis />
       </span>
@@ -34,7 +37,8 @@ export default function Menu({ onDelete, onEdit, ...props }) {
         >
           <button
             className="text-red-500 rounded-md flex items-center gap-2 cursor-pointer px-3 py-2 hover:bg-gray-100 dark:hover:bg-[#2a2a2e]"
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               onDelete?.();
               setShowMenu(false);
             }}
@@ -44,7 +48,8 @@ export default function Menu({ onDelete, onEdit, ...props }) {
           </button>
           <button
             className="text-indigo-500 rounded-md flex items-center gap-2 cursor-pointer px-3 py-2 hover:bg-gray-100 dark:hover:bg-[#2a2a2e]"
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               onEdit?.();
               setShowMenu(false);
             }}

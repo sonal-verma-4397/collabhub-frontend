@@ -8,7 +8,8 @@ import { APP_NAME } from "../../data/constants";
 export function filterByPathname(item) {
   const { pathname } = useLocation();
 
-  const path = pathname === "/" ? "/overview" : pathname;
+  // const path = pathname === "/" ? "/overview" : pathname;
+  const path = pathname;
 
   return item.path === path;
 }
