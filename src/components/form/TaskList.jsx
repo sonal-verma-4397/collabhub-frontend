@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { STATUS_COLOR, LIMIT } from "../../data/constants";
 import LocalStorageContext from "../../context/LocalStorage";
 import { toasterContext } from "../../context/Toaster";
-import { StatusInput } from "../ui/Input";
+import { StatusInput } from "../ui/my-Input";
 import { DescriptionInput } from "../ui/TextArea";
 import { ColorSelect } from "../ui/Select";
 import { AddBtn, CloseBtn } from "../ui/my-button";
