@@ -5,7 +5,7 @@ import TaskListForm from "../../components/form/TaskList";
 import TaskPrivew from "./components/TaskPrivew";
 import useDragDrop from "./hooks/useDragDrop";
 import LocalStorageContext from "../../context/LocalStorage";
-import { AddNewTaskListBtn } from "../../components/ui/Button";
+import { AddNewTaskListBtn } from "../../components/ui/my-button";
 import { TaskPreviewContext } from "../../context/TaskPreview";
 import { filterTasksByStatus } from "../../utils/filters";
 import { useParams } from "react-router-dom";

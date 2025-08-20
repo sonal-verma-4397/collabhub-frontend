@@ -5,7 +5,7 @@ import { toasterContext } from "../../context/Toaster";
 import { StatusInput } from "../ui/Input";
 import { DescriptionInput } from "../ui/TextArea";
 import { ColorSelect } from "../ui/Select";
-import { AddBtn, CloseBtn } from "../ui/Button";
+import { AddBtn, CloseBtn } from "../ui/my-button";
 
 function capitalizeEachWord(str) {
   return str
