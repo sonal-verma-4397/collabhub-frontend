@@ -1,17 +1,20 @@
-export function DescriptionInput({ ...props }) {
+import * as React from "react"
+
+import { cn } from "@/lib/utils"
+
+function Textarea({
+  className,
+  ...props
+}) {
   return (
-    <>
-      <label htmlFor="description">Description</label>
-      <textarea
-        type="text"
-        id="description"
-        title="description"
-        name="description"
-        placeholder="Enter description"
-        rows={4}
-        className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#1A1B1E] text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 resize-none"
-        {...props}
-      />
-    </>
+    <textarea
+      data-slot="textarea"
+      className={cn(
+        "border-input placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 flex field-sizing-content min-h-16 w-full rounded-md border bg-transparent px-3 py-2 text-base shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+        className
+      )}
+      {...props} />
   );
 }
+
+export { Textarea }
