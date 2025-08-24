@@ -1,7 +1,7 @@
 import React, { use, useContext, useState } from "react";
 import { DateInput, TitleInput } from "../ui/my-Input";
-import { DescriptionInput } from "../ui/TextArea";
-import { StatusSelect } from "../ui/Select";
+import { DescriptionInput } from "../ui/my-textArea";
+import { StatusSelect } from "../ui/my-select";
 import { AddBtn, CloseBtn } from "../ui/my-button";
 import { LIMIT } from "../../data/constants";
 import LocalStorageContext from "../../context/LocalStorage";

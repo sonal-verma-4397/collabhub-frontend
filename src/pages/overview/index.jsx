@@ -75,24 +75,24 @@ export default function Overview() {
   const getActivityIcon = (type) => {
     switch (type) {
       case "task_completed":
-        return <CheckCircle2 className="w-4 h-4 text-green-600" />;
+        return <CheckCircle2 className="w-4 h-4 text-green-500" />;
       case "page_created":
-        return <FileText className="w-4 h-4 text-blue-600" />;
+        return <FileText className="w-4 h-4 text-blue-500" />;
       case "task_assigned":
-        return <Users className="w-4 h-4 text-purple-600" />;
+        return <Users className="w-4 h-4 text-purple-500" />;
       case "comment_added":
-        return <Bell className="w-4 h-4 text-orange-600" />;
+        return <Bell className="w-4 h-4 text-orange-500" />;
       case "task_overdue":
-        return <Clock className="w-4 h-4 text-red-600" />;
+        return <Clock className="w-4 h-4 text-red-500" />;
       default:
-        return <Bell className="w-4 h-4 text-gray-600" />;
+        return <Bell className="w-4 h-4 text-gray-500" />;
     }
   };
 
   const getPriorityColor = (priority) => {
     switch (priority) {
       case "urgent":
-        return "bg-red-100 text-red-800 border-red-200";
+        return "bg-red-100 text-red-100 border-red-200";
       case "high":
         return "bg-orange-100 text-orange-800 border-orange-200";
       case "medium":
@@ -121,10 +121,10 @@ export default function Overview() {
           {/* Welcome Section */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">
+              <h1 className="text-2xl font-bold text-white">
                 Welcome back, John!
               </h1>
-              <p className="text-gray-600">
+              <p className="text-white-200">
                 {"Here's what's happening with your projects today."}
               </p>
             </div>
@@ -222,14 +222,14 @@ export default function Overview() {
                   {recentActivities.map((activity) => (
                     <div
                       key={activity.id}
-                      className="flex items-start gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors"
+                      className="flex items-start gap-4 p-3 text-white-500 rounded-lg hover:bg-gray-900 transition-colors"
                     >
                       <div className="flex-shrink-0 mt-1">
                         {getActivityIcon(activity.type)}
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <p className="text-sm font-medium text-gray-900 truncate">
+                          <p className="text-sm font-medium text-gray-500 truncate">
                             {activity.title}
                           </p>
                           <Badge
@@ -241,10 +241,10 @@ export default function Overview() {
                             {activity.priority}
                           </Badge>
                         </div>
-                        <p className="text-sm text-gray-600 mb-2">
+                        <p className="text-sm text-gray-200 mb-2">
                           {activity.description}
                         </p>
-                        <div className="flex items-center gap-2 text-xs text-gray-500">
+                        <div className="flex items-center gap-2 text-xs text-white-500">
                           <Avatar className="w-4 h-4">
                             <AvatarImage
                               src="/placeholder.svg?height=16&width=16"
