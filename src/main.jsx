@@ -21,6 +21,10 @@ import Conversation from "./pages/conversation/index.jsx";
 import Page from "./pages/document/Page.jsx";
 import { SocketProvider } from "./context/Socket.jsx";
 import { ConversationSocketProvider } from "./context/ConversationSocket.jsx";
+import { AppProvider } from "./context/GlobalContext";
+import {withAuth} from "./hoc/withAuth"
+
+const AuthenticatedUser = withAuth(User);
 
 const router = createBrowserRouter([
   {
@@ -39,8 +43,8 @@ const router = createBrowserRouter([
     errorElement: <Error />,
   },
   {
-    path: "/user/:userId",
-    element: <User />,
+    path: "/users/:userId",
+    element: <AuthenticatedUser />,
     errorElement: <Error />,
   },
   {
@@ -86,16 +90,18 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <LocalStorageProvider>
-      <TaskPreviewProvider>
-        <ToasterProvider>
-          <Suspense
-            fallback={<div className="text-center mt-10">Loading app...</div>}
-          >
-            <RouterProvider router={router} />
-          </Suspense>
-        </ToasterProvider>
-      </TaskPreviewProvider>
-    </LocalStorageProvider>
+    <AppProvider>
+      <LocalStorageProvider>
+        <TaskPreviewProvider>
+          <ToasterProvider>
+            <Suspense
+              fallback={<div className="text-center mt-10">Loading app...</div>}
+            >
+              <RouterProvider router={router} />
+            </Suspense>
+          </ToasterProvider>
+        </TaskPreviewProvider>
+      </LocalStorageProvider>
+    </AppProvider>
   </StrictMode>
 );
