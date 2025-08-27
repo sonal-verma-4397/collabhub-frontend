@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import {
   DEFAULT_STATUSES,
   DEFAULT_LABELS,
@@ -117,3 +117,7 @@ export function LocalStorageProvider({ children }) {
 }
 
 export default LocalStorageContext;
+
+export function useLocalStorage(){
+  return useContext(LocalStorageContext)
+}
