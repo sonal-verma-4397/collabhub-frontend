@@ -3,8 +3,8 @@ import { STATUS_COLOR, LIMIT } from "../../data/constants";
 import LocalStorageContext from "../../context/LocalStorage";
 import { toasterContext } from "../../context/Toaster";
 import { StatusInput } from "../ui/my-Input";
-import { DescriptionInput } from "../ui/TextArea";
-import { ColorSelect } from "../ui/Select";
+import { DescriptionInput } from "../ui/my-textArea";
+import { ColorSelect } from "../ui/my-select";
 import { AddBtn, CloseBtn } from "../ui/my-button";
 
 function capitalizeEachWord(str) {
