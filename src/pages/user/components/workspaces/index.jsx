@@ -1,60 +1,83 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import LocalStorageContext from "../../../../context/LocalStorage";
 import { Plus } from "lucide-react";
 import WorkspaceCard from "../workspace-card";
 import CreateWorkspaceForm from "../create-workspace";
 
-// -------------------- WORKSPACES SECTION ---------------------
 export default function Workspaces() {
   const { workspaces, setWorkspaces, modules, setModules, setPages, setTasks } =
     useContext(LocalStorageContext);
   const [showForm, setShowForm] = useState(false);
 
-  const handleCreateWorkspace = (newWorkspace) => {
-    setWorkspaces((prev) => [...prev, newWorkspace]);
-    setShowForm(false);
-  };
+  // GET workspaces
+  async function userWorkspaces() {
+    const res = await fetch("http://localhost:8000/workspaces", {
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+    });
+    const resData = await res.json();
+    console.log(resData.data)
+    setWorkspaces(resData.data);
+  }
 
-  const handleDeleteWorkspace = (id) => () => {
-    // Get all module IDs inside the workspace
+  // POST workspace
+  async function createWorkspaces(workspaceData) {
+    const res = await fetch("http://localhost:8000/workspaces/", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(workspaceData),
+    });
+
+    const resData = await res.json();
+
+    if (res.ok) {
+      // userWorkspaces(); // refresh list
+      setShowForm(false);
+    } else {
+      console.log(resData.message);
+    }
+  }
+  async function DeleteWorkspaces(workspaceId) {
+    const res = await fetch(`http://localhost:8000/workspaces/${workspaceId}`,
+      {
+        method: 'DELETE',
+        credentials: "include"
+      }
+    )
+  const resData =  await res.json()
+  return {ok:res.ok,data:resData}
+  }
+
+  const handleDeleteWorkspace = (id) => async() => {
+   const{ok,data} = await DeleteWorkspaces(id)
+
+  console.log(id)
+
     const modulesIdToBeDelete =
       workspaces.find((ws) => ws.id === id)?.modulesIds || [];
 
-    // Get all modules that will be deleted
     const modulesToBeDelete = modules.filter((module) =>
       modulesIdToBeDelete.includes(module.id)
     );
 
-    // Collect all page IDs to be deleted
     const pagesIdToBeDelete = modulesToBeDelete.flatMap((mod) => mod.pages);
-
-    // Collect all task IDs to be deleted
     const tasksIdToBeDelete = modulesToBeDelete.flatMap((mod) => mod.tasks);
 
-    // Delete pages by their ID
-    setPages((prev) =>
-      prev.filter((page) => !pagesIdToBeDelete.includes(page.id))
-    );
-
-    // Delete tasks by their ID
-    setTasks((prev) =>
-      prev.filter((task) => !tasksIdToBeDelete.includes(task.id))
-    );
-
-    // Delete modules by their ID
-    setModules((prev) =>
-      prev.filter((mod) => !modulesIdToBeDelete.includes(mod.id))
-    );
-
-    // Finally, delete the workspace
-    setWorkspaces((prev) => prev.filter((ws) => ws.id !== id));
+    setPages((prev) => prev.filter((page) => !pagesIdToBeDelete.includes(page.id)));
+    setTasks((prev) => prev.filter((task) => !tasksIdToBeDelete.includes(task.id)));
+    setModules((prev) => prev.filter((mod) => !modulesIdToBeDelete.includes(mod.id)));
+    setWorkspaces((prev) => prev.filter((ws) => ws._id !== id));
   };
 
   const handleEditWorkspace = (id) => () => {
     console.log(id);
-    // const workspaceToBeEdited = workspaces.find((ws) => ws.id === id);
     setShowForm(true);
   };
+
+  useEffect(() => {
+    userWorkspaces();
+  }, []);
 
   return (
     <section className="w-[70%] mx-auto">
@@ -91,7 +114,7 @@ export default function Workspaces() {
       {showForm && (
         <CreateWorkspaceForm
           onClose={() => setShowForm(false)}
-          onSubmit={handleCreateWorkspace}
+          onSubmit={createWorkspaces} // ✅ direct backend call
         />
       )}
     </section>
