@@ -32,7 +32,7 @@ export default function WorkspaceCard({ ws, handleDelete, handleEdit }) {
         <Text className={["text-xl font-medium mb-1"]}>{ws.name}</Text>
         <div className="text-sm text-gray-400">{ws.description}</div>
       </div>
-      <Menu onDelete={handleDelete(ws.id)} onEdit={handleEdit(ws.id)} />
+      <Menu onDelete={handleDelete(ws._id)} onEdit={handleEdit(ws.id)} />
     </div>
   );
 }

@@ -10,21 +10,21 @@ import { useNavigate } from "react-router-dom"
 const UserProfile = () => {
   const navigate = useNavigate()
 
-  const { user } = useAppStore()
+  const { user, clearUser } = useAppStore()
 
   const handleLogout = async () => {
     const res = await fetch("http://localhost:8000/auth/logout", {
       credentials: "include"
     })
     const resData = await res.json()
-    if(res.ok){
-      navigate("/")
-    }
-    // Add your logout logic here
-    console.log("Logging out...")
-    // Example: clear user data, redirect, etc.
-  }
+    if (res.ok) {
+      window.location.href = "/"
+      clearUser()
 
+
+    }
+
+  }
   return (
     <Dialog>
       <DialogTrigger asChild>
