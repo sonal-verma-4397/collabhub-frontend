@@ -3,8 +3,8 @@ import { createAndValidate } from "../../../../entities/utils/createAndValidate"
 import { WorkspaceSchema } from "../../../../entities/schema/workspace.schema";
 
 // -------------------- CREATE WORKSPACE FORM ---------------------
-export default function CreateWorkspaceForm({ onClose, onSubmit }) {
-  const [formData, setFormData] = useState({ name: "", description: "" });
+export default function CreateWorkspaceForm({ onClose, onSubmit,initialData }) {
+  const [formData, setFormData] = useState(initialData || {name:"",description:""});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,7 +29,7 @@ export default function CreateWorkspaceForm({ onClose, onSubmit }) {
         onSubmit={handleSubmit}
         className="bg-[#1a1a1a] text-white p-6 rounded-lg w-full max-w-md border border-gray-700"
       >
-        <h2 className="text-xl font-semibold mb-4">Create New Workspace</h2>
+        <h2 className="text-xl font-semibold mb-4">{initialData?"Edit workspace":"Create New Workspace"}</h2>
 
         <label className="block mb-2 text-sm">
           Name
@@ -66,8 +66,8 @@ export default function CreateWorkspaceForm({ onClose, onSubmit }) {
             type="submit"
             className="px-4 py-2 text-sm bg-green-600 rounded-md hover:bg-green-500"
           >
-            Create
-          </button>
+           {initialData?"Edit":"Create"}
+           </button>
         </div>
       </form>
     </div>
